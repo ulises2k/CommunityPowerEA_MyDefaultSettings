@@ -2,7 +2,7 @@
 # Drag and drop file settings 2.30.x MT5 to windows form and press button
 #
 # Autor: Ulises Cune (@Ulises2k)
-# v1.0
+# v2.0
 #
 # !!!! It version is for CommunityPower EA v2.31 !!!!
 # !!!! This script was created automaticaly !!!!
@@ -51,16 +51,286 @@ function Set-OrAddIniValue {
 #; My Defaults
 function Button([string]$filePath) {
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        Expert_Comment         = "CP-" + (Get-Date -Format "dd/MM/yyyy_HH:mm_")
-        Time_Manual_GMT_Offset = "3||2||1||20||N"
-        GUI_Enabled            = "false"
-        BE_Alert_After         = "0||3||1||30||N"
-        MessagesToGrammy       = "false||false||0||true||N"
-        Alerts_Enabled         = "false"
-        Sounds_Enabled         = "false"
+        Expert_Properties           = "===== Expert =============================================================================="
+		Expert_Id                   = "231"
+        Expert_Comment              = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
+        Lot_Properties              = "===== Lot =============================================================================="
+        GlobalAccount_Properties    = "===== Global Account =============================================================================="
+        VolPV_Properties            = "===== Volatility for all parameters nominated in points =============================================================================="
+        Pending_Properties          = "===== Pending entry =============================================================================="
+        StopLoss_Properties         = "===== StopLoss =============================================================================="
+        UseVirtualSL                = "false"
+        TakeProfit_Properties       = "===== TakeProfit =============================================================================="
+        TakeProfit_ReduceAfter      = "===== Reduce TakeProfit after minutes =============================================================================="
+        TakeProfit_ReduceSeries     = "===== Reduce TakeProfit for every order =============================================================================="
+        TakeProfit_Global           = "===== Global TakeProfit =============================================================================="
+        MinProfitToClose_Properties = "===== Min profit to close on signal =============================================================================="
+        UseVirtualTP                = "false"
+        TrailingStop_Properties     = "===== TrailingStop =============================================================================="
+        Martingail_Properties       = "======= Martingail =============================================================================="
+        BE_Alert_After              = "0"
+        PartialClose_Properties     = "===== Partial =============================================================================="
+        GlobalMartingail_Properties = "===== Apply martin to the new deals =============================================================================="
+        AutoHedge_Properties        = "===== Auto-hedge =============================================================================="
+        AntiMartingail_Properties   = "===== AntiMartingail =============================================================================="
+        BigCandle_Properties        = "===== Big candle =============================================================================="
+        Oscillators_Properties      = "===== Oscillator #1 =============================================================================="
+        Oscillator2_Properties      = "===== Oscillator #2 =============================================================================="
+        Oscillator3_Properties      = "===== Oscillator #3 =============================================================================="
+        IdentifyTrend_Properties    = "===== IdentifyTrend =============================================================================="
+        TDI_Properties              = "===== TDI =============================================================================="
+        MACD_Properties             = "===== MACD =============================================================================="
+        PSar_Properties             = "===== SAR =============================================================================="
+        MA_Filter_1_Properties      = "===== MA Filter #1 =============================================================================="
+        MA_Filter_2_Properties      = "===== MA Filter #2 =============================================================================="
+        MA_Filter_3_Properties      = "===== MA Filter #3 =============================================================================="
+        ZZ_Properties               = "===== ZigZag =============================================================================="
+        VolMA_Properties            = "===== Volatility for MA and ZigZag Filters distance =============================================================================="
+        VolFilter_Properties        = "===== Volatility Filter =============================================================================="
+        FIBO_Properties             = "===== FIBO #1 =============================================================================="
+        FIB2_Properties             = "===== FIBO #2 =============================================================================="
+        Spread_Settings             = "===== Spread =============================================================================="
+        Time_Settings               = "===== Time =============================================================================="
+        Time_ApplyTo                = "0"
+        Time_DST_Mode               = "1"
+        Time_Manual_GMT_Offset      = "2"
+        Custom_Schedule_Properties  = "===== Custom Schedule ====="
+        NewYear_Properties          = "===== New Year Holidays ====="
+        LastDecemberDay             = "15"
+        FirstJanuaryDay             = "15"
+        News_Properties             = "===== News =============================================================================="
+        News_Draw_Properties        = "===== Visualization ====="
+        Lines_Settings              = "===== Lines =============================================================================="
+        GUI_Settings                = "========== GUI =============================================================================="
+        ManageManual                = "true"
+        GUI_Enabled                 = "false"
+        ShowOrders_Settings         = "========== Show Orders =============================================================================="
+        Show_Opened                 = "1"
+        Show_Closed                 = "true"
+        Show_Pending                = "false"
+        MaxHistoryDeals             = "500"
+        Color_Properties            = "========== Main Color =============================================================================="
+        Color_B_Open                = "16748574"
+        Color_B                     = "16748574"
+        Color_B_Loss                = "15130800"
+        Color_S_Open                = "17919"
+        Color_S                     = "17919"
+        Color_S_Loss                = "12695295"
+        Profit_Properties           = "========== TakeProfit =============================================================================="
+        Profit_ShowInMoney          = "true"
+        Profit_ShowInPoints         = "true"
+        Profit_ShowInPercents       = "true"
+        Profit_Aggregate            = "true"
+        ProfitDigitsToShow          = "1"
+        Font                        = "Arial"
+        FontSize                    = "9"
+        Style_Properties            = "========== Style =============================================================================="
+        Open_Close_Line_Width       = "1"
+        Open_Close_Line_Style       = "2"
+        Open_PriceLabel_Width       = "1"
+        Close_PriceLabel_Width      = "1"
+        SL_TP_Dashes_Show           = "true"
+        SL_TP_Lines_Width           = "2"
+        SL_TP_Lines_Style           = "2"
+        Expiration_Width            = "0"
+        Expiration_Style            = "2"
+        Notifications_Settings      = "===== Notifications =============================================================================="
+        MessagesToGrammy            = "false"
+        Alerts_Enabled              = "false"
+        Sounds_Enabled              = "false"
+        Optimization_Settings       = "===== Optimization =============================================================================="
     }
+
+    if (!($comboBox1.SelectedIndex -eq "-1")) {
+        if ($comboBox1.SelectedItem.ToString() -eq "EUR/USD" ) {
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                #; Friday and Monday
+                EveryDay_Properties        = "===== Every Day / EUR/USD ====="
+                EveryDay_StartHour         = "0"
+                EveryDay_StartMinute       = "5"
+                EveryDay_EndHour           = "23"
+                EveryDay_EndMinute         = "0"
+                EveryDay_CloseHour         = "-1"
+                EveryDay_CloseMinute       = "0"
+                FridayMonday_Properties    = "===== Friday and Monday / EUR/USD ====="
+                FridayStop_Hour            = "22"
+                FridayStop_Minute          = "0"
+                FridayClose_Hour           = "-1"
+                FridayClose_Minute         = "0"
+                MondayStart_Hour           = "0"
+                MondayStart_Minute         = "5"
+                #; Custom Schedule
+                Custom_Schedule_Properties = "===== Custom Schedule / EUR/USD ====="
+                Custom_Schedule_On         = "true"
+                Monday_StartHour           = "0"
+                Monday_StartMinute         = "5"
+                Monday_EndHour             = "23"
+                Monday_EndMinute           = "45"
+                Tuesday_StartHour          = "0"
+                Tuesday_StartMinute        = "5"
+                Tuesday_EndHour            = "23"
+                Tuesday_EndMinute          = "45"
+                Wednesday_StartHour        = "0"
+                Wednesday_StartMinute      = "5"
+                Wednesday_EndHour          = "23"
+                Wednesday_EndMinute        = "45"
+                Thursday_StartHour         = "0"
+                Thursday_StartMinute       = "5"
+                Thursday_EndHour           = "23"
+                Thursday_EndMinute         = "45"
+                Friday_StartHour           = "0"
+                Friday_StartMinute         = "5"
+                Friday_EndHour             = "22"
+                Friday_EndMinute           = "0"
+            }
+        }
+    }
+
+    if (!($comboBox1.SelectedIndex -eq "-1")) {
+        if ($comboBox1.SelectedItem.ToString() -eq "XAU/USD" ) {
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                EveryDay_Properties     = "===== Every Day / XAU/USD ====="
+                EveryDay_StartHour      = "1"
+                EveryDay_StartMinute    = "5"
+                EveryDay_EndHour        = "23"
+                EveryDay_EndMinute      = "0"
+                EveryDay_CloseHour      = "-1"
+                EveryDay_CloseMinute    = "0"
+                FridayMonday_Properties = "===== Friday and Monday / XAU/USD ====="
+                FridayStop_Hour         = "22"
+                FridayStop_Minute       = "0"
+                FridayClose_Hour        = "-1"
+                FridayClose_Minute      = "0"
+                MondayStart_Hour        = "0"
+                MondayStart_Minute      = "5"
+                #; Custom Schedule
+                Custom_Schedule_Properties = "===== Custom Schedule / XAU/USD ====="
+                Custom_Schedule_On         = "true"
+                Monday_StartHour           = "1"
+                Monday_StartMinute         = "5"
+                Monday_EndHour             = "23"
+                Monday_EndMinute           = "45"
+                Tuesday_StartHour          = "1"
+                Tuesday_StartMinute        = "5"
+                Tuesday_EndHour            = "23"
+                Tuesday_EndMinute          = "45"
+                Wednesday_StartHour        = "1"
+                Wednesday_StartMinute      = "5"
+                Wednesday_EndHour          = "22"
+                Wednesday_EndMinute        = "0"
+                Thursday_StartHour         = "1"
+                Thursday_StartMinute       = "5"
+                Thursday_EndHour           = "23"
+                Thursday_EndMinute         = "45"
+                Friday_StartHour           = "1"
+                Friday_StartMinute         = "5"
+                Friday_EndHour             = "22"
+                Friday_EndMinute           = "0"
+            }
+        }
+    }
+
+    if (!($comboBox1.SelectedIndex -eq "-1")) {
+        if ($comboBox1.SelectedItem.ToString() -eq "Every Day/Friday and Monday (Disable)" ) {
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                EveryDay_Properties     = "===== Every Day ====="
+                EveryDay_StartHour      = "-1"
+                EveryDay_StartMinute    = "0"
+                EveryDay_EndHour        = "-1"
+                EveryDay_EndMinute      = "0"
+                EveryDay_CloseHour      = "-1"
+                EveryDay_CloseMinute    = "0"
+                FridayMonday_Properties = "===== Friday and Monday ====="
+                FridayStop_Hour         = "-1"
+                FridayStop_Minute       = "0"
+                FridayClose_Hour        = "-1"
+                FridayClose_Minute      = "0"
+                MondayStart_Hour        = "-1"
+                MondayStart_Minute      = "0"
+                #; Custom Schedule
+                Custom_Schedule_Properties = "===== Custom Schedule ====="
+                Custom_Schedule_On         = "true"
+                Monday_StartHour           = "1"
+                Monday_StartMinute         = "5"
+                Monday_EndHour             = "23"
+                Monday_EndMinute           = "45"
+                Tuesday_StartHour          = "1"
+                Tuesday_StartMinute        = "5"
+                Tuesday_EndHour            = "23"
+                Tuesday_EndMinute          = "45"
+                Wednesday_StartHour        = "1"
+                Wednesday_StartMinute      = "5"
+                Wednesday_EndHour          = "22"
+                Wednesday_EndMinute        = "0"
+                Thursday_StartHour         = "1"
+                Thursday_StartMinute       = "5"
+                Thursday_EndHour           = "23"
+                Thursday_EndMinute         = "45"
+                Friday_StartHour           = "1"
+                Friday_StartMinute         = "5"
+                Friday_EndHour             = "22"
+                Friday_EndMinute           = "0"
+            }
+        }
+    }
+
+    if ($comboBox1.SelectedIndex -eq "-1") {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            EveryDay_Properties     = "===== Every Day ====="
+            EveryDay_StartHour      = "-1"
+            EveryDay_StartMinute    = "0"
+            EveryDay_EndHour        = "-1"
+            EveryDay_EndMinute      = "0"
+            EveryDay_CloseHour      = "-1"
+            EveryDay_CloseMinute    = "0"
+            FridayMonday_Properties = "===== Friday and Monday ====="
+            FridayStop_Hour         = "-1"
+            FridayStop_Minute       = "0"
+            FridayClose_Hour        = "-1"
+            FridayClose_Minute      = "0"
+            MondayStart_Hour        = "-1"
+            MondayStart_Minute      = "0"
+        }
+    }
+	
+	$inifile = Get-IniFile($filePath)
+    $Pending_Type = [int]$inifile["Pending_Type"]	
+	if ($Pending_Type -eq 0){
+		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+			NextOrder_Width="0"
+		}
+	}else{
+		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+			NextOrder_Width="1"
+		}
+	}
+	
+	$ZZ_Type = [int]$inifile["ZZ_Type"]
+	$MA_Filter_1_Type = [int]$inifile["MA_Filter_1_Type"]
+	$MA_Filter_2_Type = [int]$inifile["MA_Filter_2_Type"]
+	$MA_Filter_3_Type = [int]$inifile["MA_Filter_3_Type"]
+	
+	if (($ZZ_Type -eq 0) -and ($MA_Filter_1_Type -eq 0) -and ($MA_Filter_2_Type -eq 0) -and ($MA_Filter_3_Type -eq 0)){
+		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+			VolMA_Type="0"
+		}	
+	}
+	
+	$StopLoss = [int]$inifile["StopLoss"]
+	if ($StopLoss -eq 0){
+		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+			StopLoss_Width="0"
+		}
+	}else{
+		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+			StopLoss_Width="2"
+		}
+	}
+	
+	
     return $true
 }
+
 
 #; Expert properties
 function Button1([string]$filePath) {
@@ -164,11 +434,11 @@ function Button7([string]$filePath) {
 #; TrailingStop properties
 function Button8([string]$filePath) {
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        TrailingStop            = "10||10||10||40||N"
-        TrailingStep            = "3||10||10||40||N"
-        TrailingStopAfter       = "0||10||10||40||N"
-        TrailingStopMode        = "0||0||0||1||N"
-        TrailingStop_ModeP      = "0||0||0||1||N"
+        TrailingStop       = "10||10||10||40||N"
+        TrailingStep       = "3||10||10||40||N"
+        TrailingStopAfter  = "0||10||10||40||N"
+        TrailingStopMode   = "0||0||0||1||N"
+        TrailingStop_ModeP = "0||0||0||1||N"
     }
     return $true
 }
@@ -735,14 +1005,24 @@ function Button38([string]$filePath) {
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 
+
 ### Create form ###
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Set Default Value only for each Sections - CommunityPower EA v2.31"
-$form.Size = '600,950'
+$form.Size = '600,850'
 $form.StartPosition = "CenterScreen"
 $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
 $form.Topmost = $True
+
+#Combobox
+$tickets = @("EUR/USD", "XAU/USD", "Every Day/Friday and Monday (Disable)")
+$comboBox1 = New-Object System.Windows.Forms.ComboBox
+$comboBox1.Location = '220, 10'
+$comboBox1.Size = '300, 50'
+foreach ($ticket in $tickets) {
+    $comboBox1.Items.add($ticket)
+}
 
 ### Define controls ###
 $button = New-Object System.Windows.Forms.Button
@@ -981,21 +1261,21 @@ $button38.Text = "Optimization settings"
 
 # Checkbox
 $checkbox = New-Object Windows.Forms.Checkbox
-$checkbox.Location = '220,8'
+$checkbox.Location = '220,50'
 $checkbox.AutoSize = $True
 $checkbox.Text = "Clear afterwards"
 
 # Label
 $label = New-Object Windows.Forms.Label
-$label.Location = '5,800'
+$label.Location = '220,90'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
 $listBox = New-Object Windows.Forms.ListBox
-$listBox.Location = '5,820'
+$listBox.Location = '220,110'
 $listBox.Height = 50
-$listBox.Width = 550
+$listBox.Width = 350
 $listBox.Anchor = ([System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right -bor [System.Windows.Forms.AnchorStyles]::Top)
 $listBox.IntegralHeight = $False
 $listBox.AllowDrop = $True
@@ -1049,6 +1329,7 @@ $form.Controls.Add($checkbox)
 $form.Controls.Add($label)
 $form.Controls.Add($listBox)
 $form.Controls.Add($statusBar)
+$form.Controls.Add($comboBox1)
 $form.ResumeLayout()
 
 ### Write event handlers ###
