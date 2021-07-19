@@ -49,7 +49,8 @@ function Set-OrAddIniValue {
 #; My Defaults
 function Button([string]$filePath) {
 
-    $PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+	$PathDest = (Get-Item $filePath).BaseName + ".set"
     $CurrentDir = Split-Path -Path "$filePath"
     $filePathNew = "$CurrentDir\$PathDest"
     Copy-Item "$filePath" -Destination $filePathNew
@@ -76,7 +77,7 @@ function Button([string]$filePath) {
         MinProfitToClose_Properties = "===== Min profit to close on signal ====="
         UseVirtualTP                = "false"
         TrailingStop_Properties     = "===== TrailingStop ====="
-        Martingail_Properties       = "===== Martingale ====="
+        Martingale_Properties       = "===== Martingale ====="
         BE_Alert_After              = "0"
         AllowBoth_Properties        = "===== Allow both Martin and Anti-martin ====="
         PartialClose_Properties     = "===== Partial Close ====="
@@ -84,7 +85,7 @@ function Button([string]$filePath) {
     }
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        AntiMartingail_Properties = "===== Anti-Martingale ====="
+        AntiMartingale_Properties = "===== Anti-Martingale ====="
         BigCandle_Properties      = "===== Big candle ====="
         Oscillators_Properties    = "===== Oscillator #1 ====="
         Oscillator2_Properties    = "===== Oscillator #2 ====="
@@ -673,8 +674,8 @@ function Button([string]$filePath) {
     }
 
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
-    $IdentifyTrend_Enable = [int]$inifile["IdentifyTrend_Enable"]
-    if ($IdentifyTrend_Enable -eq 0) {
+    $IdentifyTrend_Enable = [string]$inifile["IdentifyTrend_Enable"]
+    if ([string]$IdentifyTrend_Enable -eq "false") {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             IdentifyTrend_OpenOn         = "0"
             IdentifyTrend_MartinOn       = "0"
@@ -920,19 +921,19 @@ function Button2([string]$filePath) {
         $fileNewName = $fileNewName + "Oscillator3_"
     }
 
-    $IdentifyTrend = [int]$inifile["IdentifyTrend_Type"]
-    if ($IdentifyTrend -ne 0) {
+    $IdentifyTrend = [string]$inifile["IdentifyTrend_Enable"]
+    if ($IdentifyTrend -eq "true") {
         $fileNewName = $fileNewName + "IdentifyTrend_"
     }
-
-    $TDI = [int]$inifile["TDI_Type"]
+	
+    $TDI = [int]$inifile["TDI_Mode"]
     if ($TDI -ne 0) {
         $fileNewName = $fileNewName + "TDI_"
     }
-
+	
     $MACD = [int]$inifile["MACD_Type"]
     if ($MACD -ne 0) {
-        $fileNewName = $fileNewName + "MACD_"
+        $fileNewName = $fileNewName + "MACD1_"
     }
 
     $MACD2 = [int]$inifile["MACD2_Type"]
