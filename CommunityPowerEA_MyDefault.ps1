@@ -65,7 +65,7 @@ function Button([string]$filePath) {
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         Expert_Properties           = "===== Expert ====="
-        Expert_Id                   = "235"
+        Expert_Id                   = "236"
         Expert_Comment              = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
         Lot_Properties              = "===== Lot ====="
         Hedge_Properties            = "===== Hedge ====="
