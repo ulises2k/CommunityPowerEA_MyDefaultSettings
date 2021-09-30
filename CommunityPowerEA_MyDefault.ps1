@@ -3,7 +3,7 @@
 # Autor: Ulises Cune (@Ulises2k)
 # v2.2
 #
-# !!!! It version is for CommunityPower EA v2.36 !!!!
+# !!!! It version is for CommunityPower EA v2.38 !!!!
 #Correlaciones
 #https://www.mataf.net/es/forex/tools/correlation
 
@@ -65,24 +65,24 @@ function Button([string]$filePath) {
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         Expert_Properties           = "===== Expert ====="
-        Expert_Id                   = "236"
+        Expert_Id                   = "238"
         Expert_Comment              = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
         Lot_Properties              = "===== Lot ====="
         Hedge_Properties            = "===== Hedge ====="
         GlobalAccount_Properties    = "===== Global Account ====="
         VolPV_Properties            = "===== Volatility for all parameters nominated in points ====="
         Pending_Properties          = "===== Pending entry ====="
-        StopLoss_Properties         = "===== StopLoss ====="
-        StopLoss_Global             = "===== Summ StopLoss (buy + sell) ====="
+        StopLoss_Properties         = "===== Stop Loss ====="
+        StopLoss_Global             = "===== Summ Stop Loss (buy + sell) ====="
         StopLoss_Pause              = "===== Pause after loss ====="
         UseVirtualSL                = "false"
-        TakeProfit_Properties       = "===== TakeProfit ====="
+        TakeProfit_Properties       = "===== Take Profit ====="
         TakeProfit_ReduceAfter      = "===== Reduce TakeProfit after minutes ====="
         TakeProfit_ReduceSeries     = "===== Reduce TakeProfit for every order ====="
         TakeProfit_Global           = "===== Summ TakeProfit (buy + sell) ====="
         MinProfitToClose_Properties = "===== Min profit to close on signal ====="
         UseVirtualTP                = "false"
-        TrailingStop_Properties     = "===== TrailingStop ====="
+        TrailingStop_Properties     = "===== Trailing Stop ====="
         Martingale_Properties       = "===== Martingale ====="
         BE_Alert_After              = "0"
         AllowBoth_Properties        = "===== Allow both Martin and Anti-martin ====="
@@ -702,7 +702,7 @@ function Button([string]$filePath) {
     if ($Oscillators_Type -eq 0) {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             Oscillators_OpenOn         = "0"
-            Oscillators_MartinOm       = "0"
+            Oscillators_MartinOn       = "0"
             Oscillators_CloseOn        = "0"
             Oscillators_PartialCloseOn = "0"
             Oscillators_HedgeOn        = "0"
@@ -1373,7 +1373,7 @@ function Button2([string]$filePath) {
     $PathDest = (Get-Item $filePath).BaseName + $fileNewName + ".set"
     $CurrentDir = Split-Path -Path "$filePath"
     $filePathNew = "$CurrentDir\$PathDest"
-    Copy-Item "$filePath" -Destination $filePathNew
+    Copy-Item $filePath -Destination $filePathNew
 
     return $true
 }
