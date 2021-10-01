@@ -1,7 +1,7 @@
 # Defaults Settings for Production (live) Setting File
 #
 # Autor: Ulises Cune (@Ulises2k)
-# v2.2
+# v2.3
 #
 # !!!! It version is for CommunityPower EA v2.38 !!!!
 #Correlaciones
@@ -77,9 +77,9 @@ function Button([string]$filePath) {
         StopLoss_Pause              = "===== Pause after loss ====="
         UseVirtualSL                = "false"
         TakeProfit_Properties       = "===== Take Profit ====="
-        TakeProfit_ReduceAfter      = "===== Reduce TakeProfit after minutes ====="
-        TakeProfit_ReduceSeries     = "===== Reduce TakeProfit for every order ====="
-        TakeProfit_Global           = "===== Summ TakeProfit (buy + sell) ====="
+        TakeProfit_ReduceAfter      = "===== Reduce Take Profit after minutes ====="
+        TakeProfit_ReduceSeries     = "===== Reduce Take Profit for every order ====="
+        TakeProfit_Global           = "===== Summ Take Profit (buy + sell) ====="
         MinProfitToClose_Properties = "===== Min profit to close on signal ====="
         UseVirtualTP                = "false"
         TrailingStop_Properties     = "===== Trailing Stop ====="
@@ -146,7 +146,7 @@ function Button([string]$filePath) {
         Show_Closed                = "true"
         MaxHistoryDeals            = "500"
         Color_Properties           = "========== Main Color =========="
-        Profit_Properties          = "========== TakeProfit =========="
+        Profit_Properties          = "========== Take Profit =========="
         Profit_ShowInMoney         = "true"
         Profit_ShowInPoints        = "true"
         Profit_ShowInPercents      = "true"
