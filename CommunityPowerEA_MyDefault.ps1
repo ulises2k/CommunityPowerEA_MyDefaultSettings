@@ -1157,10 +1157,10 @@ function Button2([string]$filePath) {
         elseif ($Oscillators_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK1_"
         }
-        elseif ($Oscillators_Indicator -eq 4) {
+        elseif ($Oscillators_Indicator -eq 5) {	#Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD1_"
         }
-        elseif ($Oscillators_Indicator -eq 5) {
+        elseif ($Oscillators_Indicator -eq 4) {
             $fileNewName = $fileNewName + "Momentum1_"
         }
     }
@@ -1181,10 +1181,10 @@ function Button2([string]$filePath) {
         elseif ($Oscillator2_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK2_"
         }
-        elseif ($Oscillator2_Indicator -eq 4) {
+        elseif ($Oscillator2_Indicator -eq 5) { #Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD2_"
         }
-        elseif ($Oscillator2_Indicator -eq 5) {
+        elseif ($Oscillator2_Indicator -eq 4) {
             $fileNewName = $fileNewName + "Momentum2_"
         }
     }
@@ -1204,10 +1204,10 @@ function Button2([string]$filePath) {
         elseif ($Oscillator3_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK3_"
         }
-        elseif ($Oscillator3_Indicator -eq 4) {
+        elseif ($Oscillator3_Indicator -eq 5) { #Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD3_"
         }
-        elseif ($Oscillator3_Indicator -eq 5) {
+        elseif ($Oscillator3_Indicator -eq 4) {
             $fileNewName = $fileNewName + "Momentum3_"
         }
     }
@@ -1274,7 +1274,7 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_1_Method -eq 7) {
             $fileNewName = $fileNewName + "MA1_TEMA_"
         }
-        elseif ($MA_Filter_1_Method -eq 8) {
+        elseif ($MA_Filter_1_Method -eq 9) {   #Andrey not use Index 8(v2.38)
             $fileNewName = $fileNewName + "MA1_HMA_"
         }
     }
@@ -1306,7 +1306,7 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_2_Method -eq 7) {
             $fileNewName = $fileNewName + "MA2_TEMA_"
         }
-        elseif ($MA_Filter_2_Method -eq 8) {
+        elseif ($MA_Filter_2_Method -eq 9) {  #Andrey not use Index 8(v2.38)
             $fileNewName = $fileNewName + "MA2_HMA_"
         }
     }
@@ -1338,7 +1338,7 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_3_Method -eq 7) {
             $fileNewName = $fileNewName + "MA3_TEMA_"
         }
-        elseif ($MA_Filter_3_Method -eq 8) {
+        elseif ($MA_Filter_3_Method -eq 8) {	#Andrey not use Index 8(v2.38)
             $fileNewName = $fileNewName + "MA3_HMA_"
         }
     }
