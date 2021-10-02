@@ -1,7 +1,7 @@
 # Defaults Settings for Production (live) Setting File
 #
 # Autor: Ulises Cune (@Ulises2k)
-# v2.3
+# v2.4
 #
 # !!!! It version is for CommunityPower EA v2.38 !!!!
 #Correlaciones
@@ -92,7 +92,7 @@ function Button([string]$filePath) {
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         AntiMartingale_Properties = "===== Anti-Martingale ====="
-        BigCandle_Properties      = "===== Big candle ====="
+        BigCandle_Properties      = "===== Big Candle ====="
         Oscillators_Properties    = "===== Oscillator #1 ====="
         Oscillator2_Properties    = "===== Oscillator #2 ====="
         Oscillator3_Properties    = "===== Oscillator #3 ====="
@@ -101,7 +101,7 @@ function Button([string]$filePath) {
         MACD_Properties           = "===== MACD #1 ====="
         MACD2_Properties          = "===== MACD #2 ====="
         DTrend_Properties         = "===== DTrend ====="
-        PSar_Properties           = "===== SAR ====="
+        PSar_Properties           = "===== Parabolic SAR ====="
         MA_Filter_1_Properties    = "===== MA Filter #1 ====="
         MA_Filter_2_Properties    = "===== MA Filter #2 ====="
         MA_Filter_3_Properties    = "===== MA Filter #3 ====="
@@ -1122,19 +1122,19 @@ function Button2([string]$filePath) {
 
     $VolPV_Type = [int]$inifile["VolPV_Type"]
     if ($VolPV_Type -eq 1) {
-        $fileNewName = $fileNewName + "ATR_"
+        $fileNewName = $fileNewName + "VolParamATR_"
     }
     elseif ($VolPV_Type -eq 2) {
-        $fileNewName = $fileNewName + "StdDev_"
+        $fileNewName = $fileNewName + "VolParamStdDev_"
     }
     elseif ($VolPV_Type -eq 3) {
-        $fileNewName = $fileNewName + "ATR_CloseOpen_"
+        $fileNewName = $fileNewName + "VolParamATR_CloseOpen_"
     }
     elseif ($VolPV_Type -eq 4) {
-        $fileNewName = $fileNewName + "WATR_"
+        $fileNewName = $fileNewName + "VolParamWATR_"
     }
     elseif ($VolPV_Type -eq 5) {
-        $fileNewName = $fileNewName + "Volume_"
+        $fileNewName = $fileNewName + "VolParamVolume_"
     }
 
     $BigCandle = [int]$inifile["BigCandle_Type"]
@@ -1157,7 +1157,8 @@ function Button2([string]$filePath) {
         elseif ($Oscillators_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK1_"
         }
-        elseif ($Oscillators_Indicator -eq 5) {	#Andrey change the number of index
+        elseif ($Oscillators_Indicator -eq 5) {
+            #Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD1_"
         }
         elseif ($Oscillators_Indicator -eq 4) {
@@ -1181,7 +1182,8 @@ function Button2([string]$filePath) {
         elseif ($Oscillator2_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK2_"
         }
-        elseif ($Oscillator2_Indicator -eq 5) { #Andrey change the number of index
+        elseif ($Oscillator2_Indicator -eq 5) {
+            #Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD2_"
         }
         elseif ($Oscillator2_Indicator -eq 4) {
@@ -1204,7 +1206,8 @@ function Button2([string]$filePath) {
         elseif ($Oscillator3_Indicator -eq 3) {
             $fileNewName = $fileNewName + "StochasticK3_"
         }
-        elseif ($Oscillator3_Indicator -eq 5) { #Andrey change the number of index
+        elseif ($Oscillator3_Indicator -eq 5) {
+            #Andrey change the number of index
             $fileNewName = $fileNewName + "StochasticD3_"
         }
         elseif ($Oscillator3_Indicator -eq 4) {
@@ -1237,9 +1240,14 @@ function Button2([string]$filePath) {
         $fileNewName = $fileNewName + "DTrend_"
     }
 
-    $SAR = [int]$inifile["PSar_Type"]
-    if ($SAR -ne 0) {
-        $fileNewName = $fileNewName + "PSAR_"
+    $PSar_Type = [int]$inifile["PSar_Type"]
+    if ($PSar_Type -eq 1) {
+        #Parabolic SAR Direction
+        $fileNewName = $fileNewName + "PSarDirection_"
+    }
+    elseif ($PSar_Type -eq 2) {
+        #Parabolic SAR Signal
+        $fileNewName = $fileNewName + "PSarSignal_"
     }
 
     $MA_Filter_1 = [int]$inifile["MA_Filter_1_Type"]
@@ -1274,7 +1282,8 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_1_Method -eq 7) {
             $fileNewName = $fileNewName + "MA1_TEMA_"
         }
-        elseif ($MA_Filter_1_Method -eq 9) {   #Andrey not use Index 8(v2.38)
+        elseif ($MA_Filter_1_Method -eq 9) {
+            #Andrey not use Index 8(v2.38) "reserved for MODE_TRIX"
             $fileNewName = $fileNewName + "MA1_HMA_"
         }
     }
@@ -1306,7 +1315,8 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_2_Method -eq 7) {
             $fileNewName = $fileNewName + "MA2_TEMA_"
         }
-        elseif ($MA_Filter_2_Method -eq 9) {  #Andrey not use Index 8(v2.38)
+        elseif ($MA_Filter_2_Method -eq 9) {
+            #Andrey not use Index 8(v2.38) "reserved for MODE_TRIX"
             $fileNewName = $fileNewName + "MA2_HMA_"
         }
     }
@@ -1338,7 +1348,8 @@ function Button2([string]$filePath) {
         elseif ($MA_Filter_3_Method -eq 7) {
             $fileNewName = $fileNewName + "MA3_TEMA_"
         }
-        elseif ($MA_Filter_3_Method -eq 8) {	#Andrey not use Index 8(v2.38)
+        elseif ($MA_Filter_3_Method -eq 8) {
+            #Andrey not use Index 8(v2.38) "reserved for MODE_TRIX"
             $fileNewName = $fileNewName + "MA3_HMA_"
         }
     }
@@ -1349,8 +1360,20 @@ function Button2([string]$filePath) {
     }
 
     $VolFilter = [int]$inifile["VolFilter_Type"]
-    if ($VolFilter -ne 0) {
-        $fileNewName = $fileNewName + "ZigZag_"
+    if ($VolFilter -eq 1) {
+        $fileNewName = $fileNewName + "VolFilterATR_"
+    }
+    elseif ($VolFilter -eq 2) {
+        $fileNewName = $fileNewName + "VolFilterStdDev_"
+    }
+    elseif ($VolFilter -eq 3) {
+        $fileNewName = $fileNewName + "VolFilterATR_CloseOpen_"
+    }
+    elseif ($VolFilter -eq 4) {
+        $fileNewName = $fileNewName + "VolFilterWATR_"
+    }
+    elseif ($VolFilter -eq 5) {
+        $fileNewName = $fileNewName + "VolFilterVolume_"
     }
 
     $FIBO = [int]$inifile["FIBO_Type"]
