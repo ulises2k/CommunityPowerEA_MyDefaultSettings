@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Bypass -File "CommunityPowerEA_MyDefault.ps1"
