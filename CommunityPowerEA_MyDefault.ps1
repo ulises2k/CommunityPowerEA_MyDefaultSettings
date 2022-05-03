@@ -1,8 +1,7 @@
 # Defaults Settings for Production (live) Setting File
 #
 # Autor: Ulises Cune (@Ulises2k)
-# v2.5
-# Changelog: Support CP 2.46 (ADX)
+# v2.4
 #
 # !!!! It version is for CommunityPower EA v2.38 !!!!
 #Correlaciones
@@ -66,7 +65,7 @@ function Button([string]$filePath) {
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         Expert_Properties           = "===== Expert ====="
-        Expert_Id                   = "246"
+        Expert_Id                   = "238"
         Expert_Comment              = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
         Lot_Properties              = "===== Lot ====="
         Hedge_Properties            = "===== Hedge ====="
@@ -93,7 +92,6 @@ function Button([string]$filePath) {
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         AntiMartingale_Properties = "===== Anti-Martingale ====="
-        DirChange_Properties      = "===== Directional Change ====="
         BigCandle_Properties      = "===== Big Candle ====="
         Oscillators_Properties    = "===== Oscillator #1 ====="
         Oscillator2_Properties    = "===== Oscillator #2 ====="
@@ -102,7 +100,6 @@ function Button([string]$filePath) {
         TDI_Properties            = "===== TDI ====="
         MACD_Properties           = "===== MACD #1 ====="
         MACD2_Properties          = "===== MACD #2 ====="
-        ADX_Properties            = "===== ADX ====="
         DTrend_Properties         = "===== DTrend ====="
         PSar_Properties           = "===== Parabolic SAR ====="
         MA_Filter_1_Properties    = "===== MA Filter #1 ====="
@@ -135,6 +132,10 @@ function Button([string]$filePath) {
         StopLoss_ColorS            = "16711935"
         BreakEven_Width            = "1"
         BreakEven_Style            = "0"
+        BreakEven_ColorB           = "65471"
+        BreakEven_ColorS           = "33023"
+        TakeProfit_Width           = "1"
+        TakeProfit_Style           = "4"
         TakeProfit_ColorB          = "65280"
         TakeProfit_ColorS          = "255"
         GUI_Settings               = "========== GUI =========="
@@ -143,6 +144,7 @@ function Button([string]$filePath) {
         ShowOrders_Settings        = "========== Show Orders =========="
         Show_Opened                = "1"
         Show_Closed                = "true"
+        MaxHistoryDeals            = "500"
         Color_Properties           = "========== Main Color =========="
         Profit_Properties          = "========== Take Profit =========="
         Profit_ShowInMoney         = "true"
@@ -156,7 +158,7 @@ function Button([string]$filePath) {
         Open_PriceLabel_Width      = "1"
         Close_PriceLabel_Width     = "1"
         SL_TP_Dashes_Show          = "true"
-        SL_TP_Lines_Width          = "1"
+        SL_TP_Lines_Width          = "0"
         SL_TP_Lines_Style          = "2"
         Expiration_Width           = "0"
         Expiration_Style           = "2"
@@ -166,14 +168,6 @@ function Button([string]$filePath) {
         Sounds_Enabled             = "false"
         Optimization_Settings      = "===== Optimization ====="
     }
-
-	Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        TakeProfit_Width           = "2"
-        TakeProfit_Style           = "3"
-        BreakEven_ColorB           = "3329330"
-        BreakEven_ColorS           = "17919"
-        MaxHistoryDeals            = "1"
-	}
 
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "DisableTime" ) {
@@ -598,15 +592,14 @@ function Button([string]$filePath) {
     if ($Pending_Type -eq 0) {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             NextOrder_Width = "0"
-			Show_Pending = "false"
         }
     }
     else {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             NextOrder_Width = "1"
-			Show_Pending = "true"
         }
     }
+
 
     #If not use StopLoss disable line
     $StopLoss = [int]$inifile["StopLoss"]
@@ -623,6 +616,18 @@ function Button([string]$filePath) {
         }
     }
 
+    #If not use Pending disable line
+    $Pending_Type = [int]$inifile["Pending_Type"]
+    if ($Pending_Type -eq 0) {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            Show_Pending = "false"
+        }
+    }
+    else {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            Show_Pending = "true"
+        }
+    }
 
     #The stop level: This can be considered as a normal stop loss. When you add a trailing stop to an open position, your trailing stop is not active immediately. The market needs to move in your favour by the step distance for the trailing stop to be activated. If the market moves far enough against you before your trailing stop is activated, your position will be closed at this stop level.
     #The stop distance: This will be the distance between your trailing stop and the market level once your trailing stop is activated. The trailing stop will maintain this stop distance as it tracks the market.
@@ -655,15 +660,6 @@ function Button([string]$filePath) {
     }
 
 
-    #If not Enabled, Don't use for open
-    $DirChange_Type = [int]$inifile["DirChange_Type"]
-    if ($DirChange_Type -eq 0) {
-        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            DirChange_OpenOn         = "0"
-        }
-    }
-
-
     #If not select Open/OpenMartin/Close/Partial Disable
     $BigCandle_OpenOn = [int]$inifile["BigCandle_OpenOn"]
     $BigCandle_MartinOn = [int]$inifile["BigCandle_MartinOn"]
@@ -675,6 +671,7 @@ function Button([string]$filePath) {
             BigCandle_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $BigCandle_Type = [int]$inifile["BigCandle_Type"]
     if ($BigCandle_Type -eq 0) {
@@ -699,6 +696,7 @@ function Button([string]$filePath) {
             Oscillators_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $Oscillators_Type = [int]$inifile["Oscillators_Type"]
     if ($Oscillators_Type -eq 0) {
@@ -723,6 +721,7 @@ function Button([string]$filePath) {
             Oscillator2_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $Oscillator2_Type = [int]$inifile["Oscillator2_Type"]
     if ($Oscillator2_Type -eq 0) {
@@ -747,6 +746,7 @@ function Button([string]$filePath) {
             Oscillator3_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $Oscillator3_Type = [int]$inifile["Oscillator3_Type"]
     if ($Oscillator3_Type -eq 0) {
@@ -771,6 +771,7 @@ function Button([string]$filePath) {
             IdentifyTrend_Enable = "false"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $IdentifyTrend_Enable = [string]$inifile["IdentifyTrend_Enable"]
     if ([string]$IdentifyTrend_Enable -eq "false") {
@@ -795,6 +796,7 @@ function Button([string]$filePath) {
             TDI_Mode = "0"
         }
     }
+
     #If not Enabled, Don't use for openDon't use for close/Don't use for partial close
     $TDI_Mode = [int]$inifile["TDI_Mode"]
     if ($TDI_Mode -eq 0) {
@@ -819,6 +821,7 @@ function Button([string]$filePath) {
             MACD_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $MACD_Type = [int]$inifile["MACD_Type"]
     if ($MACD_Type -eq 0) {
@@ -831,7 +834,6 @@ function Button([string]$filePath) {
         }
     }
 
-
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable
     $MACD2_OpenOn = [int]$inifile["MACD2_OpenOn"]
     $MACD2_MartinOn = [int]$inifile["MACD2_MartinOn"]
@@ -843,6 +845,7 @@ function Button([string]$filePath) {
             MACD2_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $MACD2_Type = [int]$inifile["MACD2_Type"]
     if ($MACD2_Type -eq 0) {
@@ -855,31 +858,6 @@ function Button([string]$filePath) {
         }
     }
 
-
-    #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable
-    $ADX_OpenOn = [int]$inifile["ADX_OpenOn"]
-    $ADX_MartinOn = [int]$inifile["ADX_MartinOn"]
-    $ADX_CloseOn = [int]$inifile["ADX_CloseOn"]
-    $ADX_PartialCloseOn = [int]$inifile["ADX_PartialCloseOn"]
-    $ADX_HedgeOn = [int]$inifile["ADX_HedgeOn"]
-    if (($ADX_OpenOn -eq 0) -and ($ADX_MartinOn -eq 0) -and ($ADX_CloseOn -eq 0) -and ($ADX_PartialCloseOn -eq 0) -and ($ADX_HedgeOn -eq 0)) {
-        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            ADX_Type = "0"
-        }
-    }
-    #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
-    $ADX_Type = [int]$inifile["ADX_Type"]
-    if ($ADX_Type -eq 0) {
-        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            ADX_OpenOn         = "0"
-            ADX_MartinOn       = "0"
-            ADX_CloseOn        = "0"
-            ADX_PartialCloseOn = "0"
-            ADX_HedgeOn        = "0"
-        }
-    }
-
-
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable
     $DTrend_OpenOn = [int]$inifile["DTrend_OpenOn"]
     $DTrend_MartinOn = [int]$inifile["DTrend_MartinOn"]
@@ -891,6 +869,7 @@ function Button([string]$filePath) {
             DTrend_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $DTrend_Type = [int]$inifile["DTrend_Type"]
     if ($DTrend_Type -eq 0) {
@@ -903,7 +882,6 @@ function Button([string]$filePath) {
         }
     }
 
-
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable
     $PSar_OpenOn = [int]$inifile["PSar_OpenOn"]
     $PSar_MartinOn = [int]$inifile["PSar_MartinOn"]
@@ -915,6 +893,7 @@ function Button([string]$filePath) {
             PSar_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $PSar_Type = [int]$inifile["PSar_Type"]
     if ($PSar_Type -eq 0) {
@@ -939,6 +918,7 @@ function Button([string]$filePath) {
             MA_Filter_1_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $MA_Filter_1_Type = [int]$inifile["MA_Filter_1_Type"]
     if ($MA_Filter_1_Type -eq 0) {
@@ -963,6 +943,7 @@ function Button([string]$filePath) {
             MA_Filter_2_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $MA_Filter_2_Type = [int]$inifile["MA_Filter_2_Type"]
     if ($MA_Filter_2_Type -eq 0) {
@@ -975,7 +956,6 @@ function Button([string]$filePath) {
         }
     }
 
-
     #If not select Open/OpenMartin/Close/Partial/ Disable
     $MA_Filter_3_OpenOn = [int]$inifile["MA_Filter_3_OpenOn"]
     $MA_Filter_3_MartinOn = [int]$inifile["MA_Filter_3_MartinOn"]
@@ -987,6 +967,7 @@ function Button([string]$filePath) {
             MA_Filter_3_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $MA_Filter_3_Type = [int]$inifile["MA_Filter_3_Type"]
     if ($MA_Filter_3_Type -eq 0) {
@@ -1000,6 +981,7 @@ function Button([string]$filePath) {
     }
 
 
+
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable
     $ZZ_OpenOn = [int]$inifile["ZZ_OpenOn"]
     $ZZ_MartinOn = [int]$inifile["ZZ_MartinOn"]
@@ -1011,6 +993,7 @@ function Button([string]$filePath) {
             ZZ_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $ZZ_Type = [int]$inifile["ZZ_Type"]
     if ($ZZ_Type -eq 0) {
@@ -1022,6 +1005,7 @@ function Button([string]$filePath) {
             ZZ_HedgeOn        = "0"
         }
     }
+
 
 
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable Volatility Filter
@@ -1060,6 +1044,7 @@ function Button([string]$filePath) {
             FIBO_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $FIBO_Type = [int]$inifile["FIBO_Type"]
     if ($FIBO_Type -eq 0) {
@@ -1084,6 +1069,7 @@ function Button([string]$filePath) {
             FIB2_Type = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $FIB2_Type = [int]$inifile["FIB2_Type"]
     if ($FIB2_Type -eq 0) {
@@ -1108,6 +1094,7 @@ function Button([string]$filePath) {
             News_Mode = "0"
         }
     }
+
     #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
     $News_Mode = [int]$inifile["News_Mode"]
     if ($News_Mode -eq 0) {
@@ -1125,7 +1112,7 @@ function Button([string]$filePath) {
     return $true
 }
 
-#; Rename Setting File
+#; Rename
 function Button2([string]$filePath) {
 
     $fileNewName = "_"
@@ -1246,11 +1233,6 @@ function Button2([string]$filePath) {
     $MACD2 = [int]$inifile["MACD2_Type"]
     if ($MACD2 -ne 0) {
         $fileNewName = $fileNewName + "MACD2_"
-    }
-
-    $ADX = [int]$inifile["ADX_Type"]
-    if ($ADX -ne 0) {
-        $fileNewName = $fileNewName + "ADX_"
     }
 
     $DTrend = [int]$inifile["DTrend_Type"]
@@ -1414,7 +1396,7 @@ function Button2([string]$filePath) {
     $PathDest = (Get-Item $filePath).BaseName + $fileNewName + ".set"
     $CurrentDir = Split-Path -Path "$filePath"
     $filePathNew = "$CurrentDir\$PathDest"
-    Copy-Item "$filePath" -Destination $filePathNew
+    Copy-Item $filePath -Destination $filePathNew
 
     return $true
 }
