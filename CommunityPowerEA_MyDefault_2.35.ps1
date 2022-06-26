@@ -1219,7 +1219,22 @@ $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
 $form.Topmost = $True
 
-#Combobox
+### Define controls ###
+# Button
+$button = New-Object System.Windows.Forms.Button
+$button.Location = '5,10'
+$button.Size = '75,20'
+$button.Width = 200
+$button.Text = "My Defaults"
+
+# Button
+$button2 = New-Object System.Windows.Forms.Button
+$button2.Location = '5,40'
+$button2.Size = '75,20'
+$button2.Width = 200
+$button2.Text = "Rename Setting File"
+
+# Combobox
 $setTimes = @("DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD")
 $comboBox = New-Object System.Windows.Forms.ComboBox
 $comboBox.Location = '220, 10'
@@ -1228,34 +1243,20 @@ foreach ($setTime in $setTimes) {
     $comboBox.Items.add($setTime)
 }
 
-### Define controls ###
-$button = New-Object System.Windows.Forms.Button
-$button.Location = '5,10'
-$button.Size = '75,20'
-$button.Width = 200
-$button.Text = "My Defaults"
-
-### Define controls ###
-$button2 = New-Object System.Windows.Forms.Button
-$button2.Location = '5,40'
-$button2.Size = '75,20'
-$button2.Width = 200
-$button2.Text = "Rename Setting File"
-
 # Checkbox
-$checkbox = New-Object Windows.Forms.Checkbox
+$checkbox = New-Object System.Windows.Forms.Checkbox
 $checkbox.Location = '220,50'
 $checkbox.AutoSize = $True
 $checkbox.Text = "Clear afterwards"
 
 # Label
-$label = New-Object Windows.Forms.Label
+$label = New-Object System.Windows.Forms.Label
 $label.Location = '5,90'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
-$listBox = New-Object Windows.Forms.ListBox
+$listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = '5,110'
 $listBox.Height = 50
 $listBox.Width = 550
@@ -1309,8 +1310,6 @@ $button2_Click = {
     $statusBar.Text = ("Renamed $($listBox.Items.Count)")
 }
 
-
-
 $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
     if ($_.Data.GetDataPresent([Windows.Forms.DataFormats]::FileDrop)) {
         # $_ = [System.Windows.Forms.DragEventArgs]
@@ -1329,25 +1328,11 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-$form_FormClosed = {
-    try {
-        $listBox.remove_Click($button_Click)
-        $listBox.remove_Click($button2_Click)
-        $listBox.remove_DragOver($listBox_DragOver)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $form.remove_FormClosed($Form_Cleanup_FormClosed)
-    }
-    catch [Exception]
-    { }
-}
-
-### Wire up events ###
 ### Wire up events ###
 $button.Add_Click($button_Click)
 $button2.Add_Click($button2_Click)
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
-$form.Add_FormClosed($form_FormClosed)
 
 #### Show form ###
 [void] $form.ShowDialog()

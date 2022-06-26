@@ -377,7 +377,8 @@ $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
 $form.Topmost = $True
 
-#Combobox
+### Define controls ###
+# Combobox
 $tickets = @("EUR/USD", "XAU/USD", "Disable Every Day/Friday and Monday")
 $comboBox = New-Object System.Windows.Forms.ComboBox
 $comboBox.Location = '220, 10'
@@ -386,7 +387,7 @@ foreach ($ticket in $tickets) {
     $comboBox.Items.add($ticket)
 }
 
-### Define controls ###
+# Button
 $button = New-Object System.Windows.Forms.Button
 $button.Location = '5,10'
 $button.Size = '75,20'
@@ -394,19 +395,19 @@ $button.Width = 200
 $button.Text = "My Defaults"
 
 # Checkbox
-$checkbox = New-Object Windows.Forms.Checkbox
+$checkbox = New-Object System.Windows.Forms.Checkbox
 $checkbox.Location = '220,50'
 $checkbox.AutoSize = $True
 $checkbox.Text = "Clear afterwards"
 
 # Label
-$label = New-Object Windows.Forms.Label
+$label = New-Object System.Windows.Forms.Label
 $label.Location = '5,90'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
-$listBox = New-Object Windows.Forms.ListBox
+$listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = '5,110'
 $listBox.Height = 50
 $listBox.Width = 550
@@ -446,8 +447,6 @@ $button_Click = {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-
-
 $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
     if ($_.Data.GetDataPresent([Windows.Forms.DataFormats]::FileDrop)) {
         # $_ = [System.Windows.Forms.DragEventArgs]
@@ -466,23 +465,10 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-$form_FormClosed = {
-    try {
-        $listBox.remove_Click($button_Click)
-        $listBox.remove_DragOver($listBox_DragOver)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $form.remove_FormClosed($Form_Cleanup_FormClosed)
-    }
-    catch [Exception]
-    { }
-}
-
-### Wire up events ###
 ### Wire up events ###
 $button.Add_Click($button_Click)
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
-$form.Add_FormClosed($form_FormClosed)
 
 #### Show form ###
 [void] $form.ShowDialog()

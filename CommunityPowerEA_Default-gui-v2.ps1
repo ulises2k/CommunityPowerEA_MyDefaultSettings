@@ -292,9 +292,9 @@ function Button([string]$filePath) {
             MondayStart_Minute      = "0"
         }
     }
-	
+
 	$inifile = Get-IniFile($filePath)
-    $Pending_Type = [int]$inifile["Pending_Type"]	
+    $Pending_Type = [int]$inifile["Pending_Type"]
 	if ($Pending_Type -eq 0){
 		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
 			NextOrder_Width="0"
@@ -304,18 +304,18 @@ function Button([string]$filePath) {
 			NextOrder_Width="1"
 		}
 	}
-	
+
 	$ZZ_Type = [int]$inifile["ZZ_Type"]
 	$MA_Filter_1_Type = [int]$inifile["MA_Filter_1_Type"]
 	$MA_Filter_2_Type = [int]$inifile["MA_Filter_2_Type"]
 	$MA_Filter_3_Type = [int]$inifile["MA_Filter_3_Type"]
-	
+
 	if (($ZZ_Type -eq 0) -and ($MA_Filter_1_Type -eq 0) -and ($MA_Filter_2_Type -eq 0) -and ($MA_Filter_3_Type -eq 0)){
 		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
 			VolMA_Type="0"
-		}	
+		}
 	}
-	
+
 	$StopLoss = [int]$inifile["StopLoss"]
 	if ($StopLoss -eq 0){
 		Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -326,8 +326,8 @@ function Button([string]$filePath) {
 			StopLoss_Width="2"
 		}
 	}
-	
-	
+
+
     return $true
 }
 
@@ -1979,57 +1979,6 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-$form_FormClosed = {
-    try {
-        $listBox.remove_Click($button_Click)
-        $listBox.remove_Click($button1_Click)
-        $listBox.remove_Click($button2_Click)
-        $listBox.remove_Click($button3_Click)
-        $listBox.remove_Click($button4_Click)
-        $listBox.remove_Click($button5_Click)
-        $listBox.remove_Click($button6_Click)
-        $listBox.remove_Click($button7_Click)
-        $listBox.remove_Click($button8_Click)
-        $listBox.remove_Click($button9_Click)
-        $listBox.remove_Click($button10_Click)
-        $listBox.remove_Click($button11_Click)
-        $listBox.remove_Click($button12_Click)
-        $listBox.remove_Click($button13_Click)
-        $listBox.remove_Click($button14_Click)
-        $listBox.remove_Click($button15_Click)
-        $listBox.remove_Click($button16_Click)
-        $listBox.remove_Click($button17_Click)
-        $listBox.remove_Click($button18_Click)
-        $listBox.remove_Click($button19_Click)
-        $listBox.remove_Click($button20_Click)
-        $listBox.remove_Click($button21_Click)
-        $listBox.remove_Click($button22_Click)
-        $listBox.remove_Click($button23_Click)
-        $listBox.remove_Click($button24_Click)
-        $listBox.remove_Click($button25_Click)
-        $listBox.remove_Click($button26_Click)
-        $listBox.remove_Click($button27_Click)
-        $listBox.remove_Click($button28_Click)
-        $listBox.remove_Click($button29_Click)
-        $listBox.remove_Click($button30_Click)
-        $listBox.remove_Click($button31_Click)
-        $listBox.remove_Click($button32_Click)
-        $listBox.remove_Click($button33_Click)
-        $listBox.remove_Click($button34_Click)
-        $listBox.remove_Click($button35_Click)
-        $listBox.remove_Click($button36_Click)
-        $listBox.remove_Click($button37_Click)
-        $listBox.remove_Click($button38_Click)
-        $listBox.remove_DragOver($listBox_DragOver)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $form.remove_FormClosed($Form_Cleanup_FormClosed)
-    }
-    catch [Exception]
-    { }
-}
-
-### Wire up events ###
 ### Wire up events ###
 $button.Add_Click($button_Click)
 $button1.Add_Click($button1_Click)
@@ -2072,7 +2021,6 @@ $button37.Add_Click($button37_Click)
 $button38.Add_Click($button38_Click)
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
-$form.Add_FormClosed($form_FormClosed)
 
 #### Show form ###
 [void] $form.ShowDialog()

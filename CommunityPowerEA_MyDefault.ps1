@@ -54,7 +54,7 @@ function Set-OrAddIniValue {
 }
 
 #; My Defaults
-function Button([string]$filePath) {
+function MyDefault([string]$filePath) {
 
     #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
     $PathDest = (Get-Item $filePath).BaseName + ".set"
@@ -65,54 +65,62 @@ function Button([string]$filePath) {
     $filePath = $filePathNew
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        Expert_Properties           = "===== Expert ====="
-        Expert_Id                   = "246"
-        Expert_Comment              = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
-        Lot_Properties              = "===== Lot ====="
-        Hedge_Properties            = "===== Hedge ====="
-        GlobalAccount_Properties    = "===== Global Account ====="
-        VolPV_Properties            = "===== Volatility for all parameters nominated in points ====="
-        Pending_Properties          = "===== Pending entry ====="
-        StopLoss_Properties         = "===== Stop Loss ====="
-        StopLoss_Global             = "===== Summ Stop Loss (buy + sell) ====="
-        StopLoss_Pause              = "===== Pause after loss ====="
-        UseVirtualSL                = "false"
-        TakeProfit_Properties       = "===== Take Profit ====="
-        TakeProfit_ReduceAfter      = "===== Reduce Take Profit after minutes ====="
-        TakeProfit_ReduceSeries     = "===== Reduce Take Profit for every order ====="
-        TakeProfit_Global           = "===== Summ Take Profit (buy + sell) ====="
-        MinProfitToClose_Properties = "===== Min profit to close on signal ====="
-        UseVirtualTP                = "false"
+        BinanceTradeConnector_Settings = "===== BinanceTradeConnector settings ====="
+        Expert_Properties              = "===== Expert ====="
+        Expert_Id                      = "248"
+        Expert_Comment                 = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
+        Lot_Properties                 = "===== Lot ====="
+        Hedge_Properties               = "===== Hedge ====="
+        GlobalAccount_Properties       = "===== Global Account ====="
+        DL_Properties                  = "===== Daily limits ====="
+        WL_Properties                  = "===== Weekly limits ====="
+        ML_Properties                  = "===== Monthly limits ====="
+        CL_Properties                  = "===== Common limits properties ====="
+        VolPV_Properties               = "===== Volatility for all parameters nominated in points ====="
+        Pending_Properties             = "===== Pending entry ====="
+        StopLoss_Properties            = "===== Stop Loss ====="
+        StopLoss_Global                = "===== Summ Stop Loss (buy + sell) ====="
+        StopLoss_Pause                 = "===== Pause after loss ====="
+        UseVirtualSL                   = "false"
+        TakeProfit_Properties          = "===== Take Profit ====="
+        TakeProfit_ReduceAfter         = "===== Reduce Take Profit after minutes ====="
+        TakeProfit_ReduceSeries        = "===== Reduce Take Profit for every order ====="
+        TakeProfit_Global              = "===== Summ Take Profit (buy + sell) ====="
+        MinProfitToClose_Properties    = "===== Min profit to close on signal ====="
+        UseVirtualTP                   = "false"
+    }
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
         TrailingStop_Properties     = "===== Trailing Stop ====="
         Martingale_Properties       = "===== Martingale ====="
         BE_Alert_After              = "0"
         AllowBoth_Properties        = "===== Allow both Martin and Anti-martin ====="
         PartialClose_Properties     = "===== Partial Close ====="
         GlobalMartingail_Properties = "===== Apply martin to the new deals ====="
+        AntiMartingale_Properties   = "===== Anti-Martingale ====="
     }
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        AntiMartingale_Properties = "===== Anti-Martingale ====="
-        DirChange_Properties      = "===== Directional Change ====="
-        BigCandle_Properties      = "===== Big Candle ====="
-        Oscillators_Properties    = "===== Oscillator #1 ====="
-        Oscillator2_Properties    = "===== Oscillator #2 ====="
-        Oscillator3_Properties    = "===== Oscillator #3 ====="
-        IdentifyTrend_Properties  = "===== IdentifyTrend ====="
-        TDI_Properties            = "===== TDI ====="
-        MACD_Properties           = "===== MACD #1 ====="
-        MACD2_Properties          = "===== MACD #2 ====="
-        ADX_Properties            = "===== ADX ====="
-        DTrend_Properties         = "===== DTrend ====="
-        PSar_Properties           = "===== Parabolic SAR ====="
-        MA_Filter_1_Properties    = "===== MA Filter #1 ====="
-        MA_Filter_2_Properties    = "===== MA Filter #2 ====="
-        MA_Filter_3_Properties    = "===== MA Filter #3 ====="
-        ZZ_Properties             = "===== ZigZag ====="
-        VolMA_Properties          = "===== Volatility for MA and ZigZag Filters distance ====="
-        VolFilter_Properties      = "===== Volatility Filter ====="
-        FIBO_Properties           = "===== FIBO #1 ====="
-        FIB2_Properties           = "===== FIBO #2 ====="
+        DirChange_Properties     = "===== Directional Change ====="
+        BigCandle_Properties     = "===== Big Candle ====="
+        Oscillators_Properties   = "===== Oscillator #1 ====="
+        Oscillator2_Properties   = "===== Oscillator #2 ====="
+        Oscillator3_Properties   = "===== Oscillator #3 ====="
+        IdentifyTrend_Properties = "===== IdentifyTrend ====="
+        TDI_Properties           = "===== TDI ====="
+        MACD_Properties          = "===== MACD #1 ====="
+        MACD2_Properties         = "===== MACD #2 ====="
+        ADX_Properties           = "===== ADX ====="
+        DTrend_Properties        = "===== DTrend ====="
+        PSar_Properties          = "===== Parabolic SAR ====="
+        MA_Filter_1_Properties   = "===== MA Filter #1 ====="
+        MA_Filter_2_Properties   = "===== MA Filter #2 ====="
+        MA_Filter_3_Properties   = "===== MA Filter #3 ====="
+        ZZ_Properties            = "===== ZigZag ====="
+        VolMA_Properties         = "===== Volatility for MA and ZigZag Filters distance ====="
+        VolFilter_Properties     = "===== Volatility Filter ====="
+        FIBO_Properties          = "===== FIBO #1 ====="
+        FIB2_Properties          = "===== FIBO #2 ====="
     }
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -137,20 +145,20 @@ function Button([string]$filePath) {
         BreakEven_Style            = "0"
         TakeProfit_ColorB          = "65280"
         TakeProfit_ColorS          = "255"
-        GUI_Settings               = "========== GUI =========="
+        GUI_Settings               = "===== GUI ====="
         ManageManual               = "true"
         GUI_Enabled                = "false"
-        ShowOrders_Settings        = "========== Show Orders =========="
+        ShowOrders_Settings        = "===== Show Orders ====="
         Show_Opened                = "1"
         Show_Closed                = "true"
-        Color_Properties           = "========== Main Color =========="
-        Profit_Properties          = "========== Take Profit =========="
+        Color_Properties           = "===== Main Color ====="
+        Profit_Properties          = "===== Take Profit ====="
         Profit_ShowInMoney         = "true"
         Profit_ShowInPoints        = "true"
         Profit_ShowInPercents      = "true"
         Profit_Aggregate           = "true"
         ProfitDigitsToShow         = "1"
-        Style_Properties           = "========== Style =========="
+        Style_Properties           = "===== Style ====="
         Open_Close_Line_Width      = "1"
         Open_Close_Line_Style      = "2"
         Open_PriceLabel_Width      = "1"
@@ -167,13 +175,13 @@ function Button([string]$filePath) {
         Optimization_Settings      = "===== Optimization ====="
     }
 
-	Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        TakeProfit_Width           = "2"
-        TakeProfit_Style           = "3"
-        BreakEven_ColorB           = "3329330"
-        BreakEven_ColorS           = "17919"
-        MaxHistoryDeals            = "1"
-	}
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        TakeProfit_Width = "2"
+        TakeProfit_Style = "3"
+        BreakEven_ColorB = "3329330"
+        BreakEven_ColorS = "17919"
+        MaxHistoryDeals  = "10"
+    }
 
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "DisableTime" ) {
@@ -232,9 +240,9 @@ function Button([string]$filePath) {
     #
     #https://roboforex.com/beginners/info/forex-trading-hours/
     #ASIA
-    #Tokyo	    2:00	10:00 (Europe/Helsinki)
-    #Hong Kong	3:00	11:00
-    #Singapore	2:00	10:00
+    #Tokyo      2:00    10:00 (Europe/Helsinki)
+    #Hong Kong  3:00    11:00
+    #Singapore  2:00    10:00
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "ASIA(Tokyo/Hong Kong/Singapore)" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -278,8 +286,8 @@ function Button([string]$filePath) {
     }
 
     #Europa
-    #Frankfurt	9:00	17:00
-    #London	    10:00	18:00 (Europe/Helsinki)
+    #Frankfurt  9:00    17:00
+    #London     10:00   18:00 (Europe/Helsinki)
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "EUROPA(Frankfurt/London)" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -323,8 +331,8 @@ function Button([string]$filePath) {
     }
 
     #América
-    #New York	15:00	23:00 (Europe/Helsinki)
-    #Chicago	16:00	24:00
+    #New York   15:00   23:00 (Europe/Helsinki)
+    #Chicago    16:00   24:00
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "AMERICA(New York/Chicago)" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -368,7 +376,7 @@ function Button([string]$filePath) {
     }
 
     #Pacífico
-    #Sidney	    1:00	9:00 (Europe/Helsinki)
+    #Sidney     1:00    9:00 (Europe/Helsinki)
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "PACIFICO(Wellington/Sidney)" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -598,13 +606,13 @@ function Button([string]$filePath) {
     if ($Pending_Type -eq 0) {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             NextOrder_Width = "0"
-			Show_Pending = "false"
+            Show_Pending    = "false"
         }
     }
     else {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
             NextOrder_Width = "1"
-			Show_Pending = "true"
+            Show_Pending    = "true"
         }
     }
 
@@ -659,7 +667,7 @@ function Button([string]$filePath) {
     $DirChange_Type = [int]$inifile["DirChange_Type"]
     if ($DirChange_Type -eq 0) {
         Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            DirChange_OpenOn         = "0"
+            DirChange_OpenOn = "0"
         }
     }
 
@@ -1126,7 +1134,7 @@ function Button([string]$filePath) {
 }
 
 #; Rename Setting File
-function Button2([string]$filePath) {
+function ButtonRename([string]$filePath) {
 
     $fileNewName = "_"
 
@@ -1178,7 +1186,6 @@ function Button2([string]$filePath) {
             $fileNewName = $fileNewName + "Momentum1_"
         }
     }
-
 
     $Oscillator2 = [int]$inifile["Oscillator2_Type"]
     if ($Oscillator2 -ne 0) {
@@ -1433,7 +1440,9 @@ $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
 $form.Topmost = $True
 
-#Combobox
+### Define controls ###
+
+# Combobox
 $setTimes = @("DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD")
 $comboBox = New-Object System.Windows.Forms.ComboBox
 $comboBox.Location = '220, 10'
@@ -1449,27 +1458,34 @@ $button.Size = '75,20'
 $button.Width = 200
 $button.Text = "My Defaults"
 
-### Define controls ###
+# Button
 $button2 = New-Object System.Windows.Forms.Button
 $button2.Location = '5,40'
 $button2.Size = '75,20'
 $button2.Width = 200
 $button2.Text = "Rename Setting File"
 
+# Button
+$button3 = New-Object System.Windows.Forms.Button
+$button3.Location = '5,60'
+$button3.Size = '75,20'
+$button3.Width = 200
+$button3.Text = "Clear ListBox"
+
 # Checkbox
-$checkbox = New-Object Windows.Forms.Checkbox
+$checkbox = New-Object System.Windows.Forms.Checkbox
 $checkbox.Location = '220,50'
 $checkbox.AutoSize = $True
 $checkbox.Text = "Clear afterwards"
 
 # Label
-$label = New-Object Windows.Forms.Label
+$label = New-Object System.Windows.Forms.Label
 $label.Location = '5,90'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
-$listBox = New-Object Windows.Forms.ListBox
+$listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = '5,110'
 $listBox.Height = 50
 $listBox.Width = 550
@@ -1485,6 +1501,7 @@ $statusBar.Text = "Ready - This script was created by Ulises Cune (@ulises2k)"
 $form.SuspendLayout()
 $form.Controls.Add($button)
 $form.Controls.Add($button2)
+$form.Controls.Add($button3)
 $form.Controls.Add($checkbox)
 $form.Controls.Add($label)
 $form.Controls.Add($listBox)
@@ -1497,7 +1514,7 @@ $button_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (Button -filePath $item) {
+            if (MyDefault -filePath $item) {
                 [System.Windows.Forms.MessageBox]::Show('Successful - ' + $button.Text, 'Defaults Values', 0, 64)
             }
         }
@@ -1514,7 +1531,7 @@ $button2_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (Button2 -filePath $item) {
+            if (ButtonRename -filePath $item) {
                 [System.Windows.Forms.MessageBox]::Show('Successful Renamed', 'Rename', 0, 64)
             }
         }
@@ -1523,7 +1540,9 @@ $button2_Click = {
     $statusBar.Text = ("Renamed $($listBox.Items.Count)")
 }
 
-
+$button3_Click = {
+	$listBox.Items.Clear()
+}
 
 $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
     if ($_.Data.GetDataPresent([Windows.Forms.DataFormats]::FileDrop)) {
@@ -1543,25 +1562,12 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-$form_FormClosed = {
-    try {
-        $listBox.remove_Click($button_Click)
-        $listBox.remove_Click($button2_Click)
-        $listBox.remove_DragOver($listBox_DragOver)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $form.remove_FormClosed($Form_Cleanup_FormClosed)
-    }
-    catch [Exception]
-    { }
-}
-
-### Wire up events ###
 ### Wire up events ###
 $button.Add_Click($button_Click)
 $button2.Add_Click($button2_Click)
+$button3.Add_Click($button3_Click)
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
-$form.Add_FormClosed($form_FormClosed)
 
 #### Show form ###
 [void] $form.ShowDialog()

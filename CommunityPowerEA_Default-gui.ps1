@@ -407,19 +407,19 @@ $button23.Width = 200
 $button23.Text = "Volatility Filter properties"
 
 # Checkbox
-$checkbox = New-Object Windows.Forms.Checkbox
+$checkbox = New-Object System.Windows.Forms.Checkbox
 $checkbox.Location = '220,8'
 $checkbox.AutoSize = $True
 $checkbox.Text = "Clear afterwards"
 
 # Label
-$label = New-Object Windows.Forms.Label
+$label = New-Object System.Windows.Forms.Label
 $label.Location = '5,40'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
-$listBox = New-Object Windows.Forms.ListBox
+$listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = '5,480'
 $listBox.Height = 50
 $listBox.Width = 480
@@ -458,8 +458,6 @@ $form.Controls.Add($button20)
 $form.Controls.Add($button21)
 $form.Controls.Add($button22)
 $form.Controls.Add($button23)
-
-
 
 
 $form.Controls.Add($checkbox)
@@ -536,43 +534,6 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
-$form_FormClosed = {
-    try {
-        $listBox.remove_Click($button_Click)
-        $listBox.remove_Click($button1_Click)
-        $listBox.remove_Click($button2_Click)
-        $listBox.remove_Click($button3_Click)
-        $listBox.remove_Click($button4_Click)
-        $listBox.remove_Click($button5_Click)
-        $listBox.remove_Click($button6_Click)
-        $listBox.remove_Click($button7_Click)
-        $listBox.remove_Click($button8_Click)
-        $listBox.remove_Click($button9_Click)
-        $listBox.remove_Click($button10_Click)
-        $listBox.remove_Click($button11_Click)
-        $listBox.remove_Click($button12_Click)
-        $listBox.remove_Click($button13_Click)
-        $listBox.remove_Click($button14_Click)
-        $listBox.remove_Click($button15_Click)
-        $listBox.remove_Click($button16_Click)
-        $listBox.remove_Click($button17_Click)
-        $listBox.remove_Click($button18_Click)
-        $listBox.remove_Click($button19_Click)
-        $listBox.remove_Click($button20_Click)
-        $listBox.remove_Click($button21_Click)
-        $listBox.remove_Click($button22_Click)
-
-
-
-        $listBox.remove_DragOver($listBox_DragOver)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $listBox.remove_DragDrop($listBox_DragDrop)
-        $form.remove_FormClosed($Form_Cleanup_FormClosed)
-    }
-    catch [Exception]
-    { }
-}
-
 
 ### Wire up events ###
 $button.Add_Click($button_Click)
@@ -601,11 +562,8 @@ $button.Add_Click($button22_Click)
 $button.Add_Click($button23_Click)
 
 
-
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
-$form.Add_FormClosed($form_FormClosed)
-
 
 #### Show form ###
 [void] $form.ShowDialog()

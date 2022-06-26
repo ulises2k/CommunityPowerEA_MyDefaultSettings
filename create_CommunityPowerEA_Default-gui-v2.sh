@@ -70,7 +70,6 @@ done
 IFS=' '
 
 
-
 echo "#######################GUI################################################################"
 echo "### API Windows Forms ###"
 echo "[void] [System.Reflection.Assembly]::LoadWithPartialName(\"System.Windows.Forms\")"
@@ -108,19 +107,19 @@ echo " "
 done
 IFS=' '
 echo "# Checkbox"
-echo "\$checkbox = New-Object Windows.Forms.Checkbox"
+echo "\$checkbox = New-Object System.Windows.Forms.Checkbox"
 echo "\$checkbox.Location = '220,8'"
 echo "\$checkbox.AutoSize = \$True"
 echo "\$checkbox.Text = \"Clear afterwards\""
 echo " "
 echo "# Label"
-echo "\$label = New-Object Windows.Forms.Label"
+echo "\$label = New-Object System.Windows.Forms.Label"
 echo "\$label.Location = '5,800'"
 echo "\$label.AutoSize = \$True"
 echo "\$label.Text = \"Drag and Drop files settings here:\""
 echo " "
 echo "# Listbox"
-echo "\$listBox = New-Object Windows.Forms.ListBox"
+echo "\$listBox = New-Object System.Windows.Forms.ListBox"
 echo "\$listBox.Location = '5,820'"
 echo "\$listBox.Height = 50"
 echo "\$listBox.Width = 550"
@@ -184,23 +183,6 @@ echo "}"
 echo " "
 done
 
-
-echo "\$form_FormClosed = {"
-echo "    try {"
-echo "        \$listBox.remove_Click(\$button_Click)"
-for i in {1..38} ; do
-echo "        \$listBox.remove_Click(\$button"$i"_Click)"
-done
-echo "        \$listBox.remove_DragOver(\$listBox_DragOver)"
-echo "        \$listBox.remove_DragDrop(\$listBox_DragDrop)"
-echo "        \$listBox.remove_DragDrop(\$listBox_DragDrop)"
-echo "        \$form.remove_FormClosed(\$Form_Cleanup_FormClosed)"
-echo "    }"
-echo "    catch [Exception]"
-echo "    { }"
-echo "}"
-echo " "
-
 echo "### Wire up events ###"
 echo "\$button.Add_Click(\$button_Click)"
 for i in {1..38} ; do
@@ -208,7 +190,6 @@ echo "\$button"$i".Add_Click(\$button"$i"_Click)"
 done
 echo "\$listBox.Add_DragOver(\$listBox_DragOver)"
 echo "\$listBox.Add_DragDrop(\$listBox_DragDrop)"
-echo "\$form.Add_FormClosed(\$form_FormClosed)"
 echo " "
 echo "#### Show form ###"
 echo "[void] \$form.ShowDialog()"
