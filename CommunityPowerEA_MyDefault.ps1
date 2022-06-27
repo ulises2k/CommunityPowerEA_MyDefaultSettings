@@ -1426,6 +1426,179 @@ function ButtonRename([string]$filePath) {
     return $true
 }
 
+function ButtonBollingerBands_1([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_1_Properties     = "===== MA Filter #1 ====="
+        MA_Filter_1_Type           = "1"
+        MA_Filter_1_TF             = "5"
+        MA_Filter_1_Period         = "20"
+        MA_Filter_1_Method         = "1"
+        MA_Filter_1_Price          = "1"
+        MA_Filter_1_DistType       = "1"
+        MA_Filter_1_DistCoef       = "2"
+        MA_Filter_1_OpenOn         = "1"
+        MA_Filter_1_MartinOn       = "0"
+        MA_Filter_1_CloseOn        = "1"
+        MA_Filter_1_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+function ButtonBollingerBands_2([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_2_Properties     = "===== MA Filter #2 ====="
+        MA_Filter_2_Type           = "1"
+        MA_Filter_2_TF             = "5"
+        MA_Filter_2_Period         = "20"
+        MA_Filter_2_Method         = "1"
+        MA_Filter_2_Price          = "1"
+        MA_Filter_2_DistType       = "1"
+        MA_Filter_2_DistCoef       = "2"
+        MA_Filter_2_OpenOn         = "1"
+        MA_Filter_2_MartinOn       = "0"
+        MA_Filter_2_CloseOn        = "1"
+        MA_Filter_2_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+function ButtonBollingerBands_3([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_3_Properties     = "===== MA Filter #3 ====="
+        MA_Filter_3_Type           = "1"
+        MA_Filter_3_TF             = "5"
+        MA_Filter_3_Period         = "20"
+        MA_Filter_3_Method         = "1"
+        MA_Filter_3_Price          = "1"
+        MA_Filter_3_DistType       = "1"
+        MA_Filter_3_DistCoef       = "2"
+        MA_Filter_3_OpenOn         = "1"
+        MA_Filter_3_MartinOn       = "0"
+        MA_Filter_3_CloseOn        = "1"
+        MA_Filter_3_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+
+function Button2EMACross_1([string]$filePath) {
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MACD_Properties      = "===== MACD #1 ====="
+        MACD_Type            = "1"
+        MACD_TF              = "5"
+        MACD_PeriodFast      = "20"
+        MACD_FastMA_Method   = "1"
+        MACD_PeriodSlow      = "50"
+        MACD_SlowMA_Method   = "1"
+        MACD_PeriodSignal    = "9"
+        MACD_SignalMA_Method = "0"
+        MACD_Price           = "1"
+        MACD_JMA_Phase       = "0"
+        MACD_Reverse         = "false"
+        MACD_UseClosedBars   = "true"
+        MACD_OpenOn          = "1"
+        MACD_MartinOn        = "0"
+        MACD_HedgeOn         = "0"
+        MACD_CloseOn         = "1"
+        MACD_PartialCloseOn  = "0"
+
+    }
+
+    return $true
+}
+
+function Button2EMACross_2([string]$filePath) {
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MACD2_Properties      = "===== MACD #2 ====="
+        MACD2_Type            = "1"
+        MACD2_TF              = "5"
+        MACD2_PeriodFast      = "20"
+        MACD2_FastMA_Method   = "1"
+        MACD2_PeriodSlow      = "50"
+        MACD2_SlowMA_Method   = "1"
+        MACD2_PeriodSignal    = "9"
+        MACD2_SignalMA_Method = "0"
+        MACD2_Price           = "1"
+        MACD2_JMA_Phase       = "0"
+        MACD2_Reverse         = "false"
+        MACD2_UseClosedBars   = "true"
+        MACD2_OpenOn          = "1"
+        MACD2_MartinOn        = "0"
+        MACD2_HedgeOn         = "0"
+        MACD2_CloseOn         = "1"
+        MACD2_PartialCloseOn  = "0"
+    }
+
+    return $true
+}
+
 #######################GUI################################################################
 ### API Windows Forms ###
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
@@ -1434,14 +1607,13 @@ function ButtonRename([string]$filePath) {
 ### Create form ###
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "My Defaults And Rename Strategy - CommunityPower EA"
-$form.Size = '600,250'
+$form.Size = '600,350'
 $form.StartPosition = "CenterScreen"
 $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
 $form.Topmost = $True
 
 ### Define controls ###
-
 # Combobox
 $setTimes = @("DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD")
 $comboBox = New-Object System.Windows.Forms.ComboBox
@@ -1451,7 +1623,7 @@ foreach ($setTime in $setTimes) {
     $comboBox.Items.add($setTime)
 }
 
-### Define controls ###
+# Button
 $button = New-Object System.Windows.Forms.Button
 $button.Location = '5,10'
 $button.Size = '75,20'
@@ -1472,22 +1644,51 @@ $button3.Size = '75,20'
 $button3.Width = 200
 $button3.Text = "Clear ListBox"
 
-# Checkbox
-$checkbox = New-Object System.Windows.Forms.Checkbox
-$checkbox.Location = '220,50'
-$checkbox.AutoSize = $True
-$checkbox.Text = "Clear afterwards"
+# Button
+$button4 = New-Object System.Windows.Forms.Button
+$button4.Location = '5,100'
+$button4.Size = '75,20'
+$button4.Width = 250
+$button4.Text = "BollingerBands #1 (MA #1 && Volatility)"
+
+# Button
+$button5 = New-Object System.Windows.Forms.Button
+$button5.Location = '5,120'
+$button5.Size = '75,20'
+$button5.Width = 250
+$button5.Text = "BollingerBands #2 (MA #2 && Volatility)"
+
+# Button
+$button6 = New-Object System.Windows.Forms.Button
+$button6.Location = '5,140'
+$button6.Size = '75,20'
+$button6.Width = 250
+$button6.Text = "BollingerBands #3 (MA #3 && Volatility)"
+
+# Button
+$button7 = New-Object System.Windows.Forms.Button
+$button7.Location = '5,160'
+$button7.Size = '75,20'
+$button7.Width = 250
+$button7.Text = "EMA Cross #1 / Fast:20 - Slow:50 (MACD #1)"
+
+# Button
+$button8 = New-Object System.Windows.Forms.Button
+$button8.Location = '5,180'
+$button8.Size = '75,20'
+$button8.Width = 250
+$button8.Text = "EMA Cross #2 / Fast:20 - Slow:50 (MACD #2)"
 
 # Label
 $label = New-Object System.Windows.Forms.Label
-$label.Location = '5,90'
+$label.Location = '5,200'
 $label.AutoSize = $True
 $label.Text = "Drag and Drop files settings here:"
 
 # Listbox
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = '5,110'
-$listBox.Height = 50
+$listBox.Location = '5,220'
+$listBox.Height = 70
 $listBox.Width = 550
 $listBox.Anchor = ([System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right -bor [System.Windows.Forms.AnchorStyles]::Top)
 $listBox.IntegralHeight = $False
@@ -1495,13 +1696,18 @@ $listBox.AllowDrop = $True
 
 # StatusBar
 $statusBar = New-Object System.Windows.Forms.StatusBar
-$statusBar.Text = "Ready - This script was created by Ulises Cune (@ulises2k)"
+$statusBar.Text = "Ready"
 
 ## Add controls to form ###
 $form.SuspendLayout()
 $form.Controls.Add($button)
 $form.Controls.Add($button2)
 $form.Controls.Add($button3)
+$form.Controls.Add($button4)
+$form.Controls.Add($button5)
+$form.Controls.Add($button6)
+$form.Controls.Add($button7)
+$form.Controls.Add($button8)
 $form.Controls.Add($checkbox)
 $form.Controls.Add($label)
 $form.Controls.Add($listBox)
@@ -1520,10 +1726,6 @@ $button_Click = {
         }
     }
 
-    if ($checkbox.Checked -eq $True) {
-        $listBox.Items.Clear()
-    }
-
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
@@ -1537,11 +1739,81 @@ $button2_Click = {
         }
     }
 
-    $statusBar.Text = ("Renamed $($listBox.Items.Count)")
+    $statusBar.Text = ("$($listBox.Items.Count) files renamed")
 }
 
 $button3_Click = {
-	$listBox.Items.Clear()
+    $listBox.Items.Clear()
+}
+
+$button4_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonBollingerBands_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #1 Apply', 'BollingerBands #1', 0, 64)
+            }
+        }
+    }
+
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #1 Apply")
+
+}
+
+$button5_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonBollingerBands_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #2 Apply', 'BollingerBands #2', 0, 64)
+            }
+        }
+    }
+
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #2 Apply")
+
+}
+
+$button6_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonBollingerBands_3 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #3 Apply', 'BollingerBands #3', 0, 64)
+            }
+        }
+    }
+
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #3 Apply")
+
+}
+
+$button7_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (Button2EMACross_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('MA cross signal #1 Apply', 'MA cross signal #1', 0, 64)
+            }
+        }
+    }
+
+    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #1 Apply")
+
+}
+
+$button8_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (Button2EMACross_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('MA cross signal #2 Apply', 'MA cross signal #2', 0, 64)
+            }
+        }
+    }
+
+    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #2 Apply")
+
 }
 
 $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
@@ -1566,6 +1838,11 @@ $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
 $button.Add_Click($button_Click)
 $button2.Add_Click($button2_Click)
 $button3.Add_Click($button3_Click)
+$button4.Add_Click($button4_Click)
+$button5.Add_Click($button5_Click)
+$button6.Add_Click($button6_Click)
+$button7.Add_Click($button7_Click)
+$button8.Add_Click($button8_Click)
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
 
