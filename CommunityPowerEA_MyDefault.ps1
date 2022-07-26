@@ -1991,6 +1991,10 @@ function ButtonSTARC_3([string]$filePath) {
 
 function ButtonCustomIndy_1([string]$filePath) {
 
+    #Buffer Reader For MT5
+    #The Buffer Reader will help you to check and export the custom indicators buffers data for your current chart and timeframe.
+    #https://www.mql5.com/en/market/product/52964?source=Unknown
+
     #CustomIndy #1
     if (!($comboBox1.SelectedIndex -eq "-1")) {
         if ($comboBox1.SelectedItem.ToString() -eq "SuperTrend" ) {
@@ -2037,12 +2041,47 @@ function ButtonCustomIndy_1([string]$filePath) {
                 }
             }
         }
-    }
 
+        if ($comboBox1.SelectedItem.ToString() -eq "DisableCustomIndy" ) {
+            #Disable Custom Indicator
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                CustomIndy1_Properties           = "===== Custom Indy #1 ====="
+                CustomIndy1_Label                = "Custom Indicator Label"
+                CustomIndy1_Type                 = "0"
+                CustomIndy1_TF                   = "0"
+                CustomIndy1_PathAndName          = "MyIndicators\MyBestIndy"
+                CustomIndy1_ParametersStr        = ""
+                CustomIndy1_BufferB              = "-1"
+                CustomIndy1_BufferS              = "-1"
+                CustomIndy1_ColorBufferB         = "-1"
+                CustomIndy1_ColorBufferS         = "-1"
+                CustomIndy1_ColorIndexB          = "-1"
+                CustomIndy1_ColorIndexS          = "-1"
+                CustomIndy1_LevelMaxB            = "-999"
+                CustomIndy1_LevelMinB            = "-999"
+                CustomIndy1_LevelMaxS            = "-999"
+                CustomIndy1_LevelMinS            = "-999"
+                CustomIndy1_Reverse              = "false"
+                CustomIndy1_UseClosedBars        = "true"
+                CustomIndy1_DrawShortName        = "MyBestIndy"
+                CustomIndy1_DrawInSubwindow      = "false"
+                CustomIndy1_AllowNegativeAndZero = "true"
+                CustomIndy1_OpenOn               = "0"
+                CustomIndy1_MartinOn             = "0"
+                CustomIndy1_HedgeOn              = "0"
+                CustomIndy1_CloseOn              = "0"
+                CustomIndy1_PartialCloseOn       = "0"
+            }
+        }
+    }
     return $true
 }
 
 function ButtonCustomIndy_2([string]$filePath) {
+
+    #Buffer Reader For MT5
+    #The Buffer Reader will help you to check and export the custom indicators buffers data for your current chart and timeframe.
+    #https://www.mql5.com/en/market/product/52964?source=Unknown
 
     #CustomIndy #2
     if (!($comboBox2.SelectedIndex -eq "-1")) {
@@ -2090,9 +2129,39 @@ function ButtonCustomIndy_2([string]$filePath) {
                 }
             }
         }
+
+        if ($comboBox2.SelectedItem.ToString() -eq "DisableCustomIndy" ) {
+            #Disable Custom Indicator
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                CustomIndy2_Properties           = "===== Custom Indy #2 ====="
+                CustomIndy2_Label                = "Custom Indicator Label"
+                CustomIndy2_Type                 = "0"
+                CustomIndy2_TF                   = "0"
+                CustomIndy2_PathAndName          = "MyIndicators\MyBestIndy"
+                CustomIndy2_ParametersStr        = ""
+                CustomIndy2_BufferB              = "-1"
+                CustomIndy2_BufferS              = "-1"
+                CustomIndy2_ColorBufferB         = "-1"
+                CustomIndy2_ColorBufferS         = "-1"
+                CustomIndy2_ColorIndexB          = "-1"
+                CustomIndy2_ColorIndexS          = "-1"
+                CustomIndy2_LevelMaxB            = "-999"
+                CustomIndy2_LevelMinB            = "-999"
+                CustomIndy2_LevelMaxS            = "-999"
+                CustomIndy2_LevelMinS            = "-999"
+                CustomIndy2_Reverse              = "false"
+                CustomIndy2_UseClosedBars        = "true"
+                CustomIndy2_DrawShortName        = "MyBestIndy"
+                CustomIndy2_DrawInSubwindow      = "false"
+                CustomIndy2_AllowNegativeAndZero = "true"
+                CustomIndy2_OpenOn               = "0"
+                CustomIndy2_MartinOn             = "0"
+                CustomIndy2_HedgeOn              = "0"
+                CustomIndy2_CloseOn              = "0"
+                CustomIndy2_PartialCloseOn       = "0"
+            }
+        }
     }
-
-
     return $true
 }
 #######################GUI################################################################
@@ -2111,31 +2180,31 @@ $form.Topmost = $True
 
 ### Define controls ###
 # Combobox
-$setTimes = @("DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD")
 $comboBox = New-Object System.Windows.Forms.ComboBox
 $comboBox.Location = '280,10'
 $comboBox.Size = '280,50'
-foreach ($setTime in $setTimes) {
-    $comboBox.Items.add($setTime)
-}
+$comboBox.DropDownStyle = 'DropDownList'
+$comboBox.AutoCompleteSource = 'ListItems'
+$comboBox.AutoCompleteMode = 'Append'
+$comboBox.Items.AddRange( @("", "DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD"))
 
 # Combobox
-$CustomIndy1 = @("SuperTrend")
 $comboBox1 = New-Object System.Windows.Forms.ComboBox
 $comboBox1.Location = '370,100'
 $comboBox1.Size = '190,50'
-foreach ($setIndy1 in $CustomIndy1) {
-    $comboBox1.Items.add($setIndy1)
-}
+$comboBox1.DropDownStyle = 'DropDownList'
+$comboBox1.AutoCompleteSource = 'ListItems'
+$comboBox1.AutoCompleteMode = 'Append'
+$comboBox1.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend"))
 
 # Combobox
-$CustomIndy2 = @("SuperTrend")
 $comboBox2 = New-Object System.Windows.Forms.ComboBox
 $comboBox2.Location = '370,120'
 $comboBox2.Size = '190,50'
-foreach ($setIndy2 in $CustomIndy2) {
-    $comboBox2.Items.add($setIndy2)
-}
+$comboBox2.DropDownStyle = 'DropDownList'
+$comboBox2.AutoCompleteSource = 'ListItems'
+$comboBox2.AutoCompleteMode = 'Append'
+$comboBox2.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend"))
 
 # Button
 $button = New-Object System.Windows.Forms.Button
