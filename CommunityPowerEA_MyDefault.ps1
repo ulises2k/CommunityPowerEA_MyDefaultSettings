@@ -13,6 +13,10 @@
 # Set-ExecutionPolicy RemoteSigned
 # Windows 2008
 # Set-ExecutionPolicy Restricted
+
+#RUN, open "cmd.exe" and write this:
+#powershell -ExecutionPolicy Bypass -File "CommunityPowerEA_MyDefault.ps1"
+
 Function Get-IniFile ($file) {
     $ini = [ordered]@{}
     switch -regex -file $file {
@@ -65,9 +69,9 @@ function MyDefault([string]$filePath) {
     $filePath = $filePathNew
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        BinanceTradeConnector_Settings = "===== BinanceTradeConnector settings ====="
+        BinanceTradeConnector_Settings = "===== Binance ====="
         Expert_Properties              = "===== Expert ====="
-        Expert_Id                      = "248"
+        Expert_Id                      = "249"
         Expert_Comment                 = "CP" + (Get-Date -Format "dd.MM.yyyy.HH:mm")
         Lot_Properties                 = "===== Lot ====="
         Hedge_Properties               = "===== Hedge ====="
@@ -121,6 +125,8 @@ function MyDefault([string]$filePath) {
         VolFilter_Properties     = "===== Volatility Filter ====="
         FIBO_Properties          = "===== FIBO #1 ====="
         FIB2_Properties          = "===== FIBO #2 ====="
+        CustomIndy1_Properties   = "===== Custom Indy #1 ====="
+        CustomIndy2_Properties   = "===== Custom Indy #2 ====="
     }
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -138,9 +144,9 @@ function MyDefault([string]$filePath) {
         NextOrder_ColorB           = "65280"
         NextOrder_ColorS           = "255"
         StopLoss_Width             = "1"
-        StopLoss_Style             = "1"
-        StopLoss_ColorB            = "16711935"
-        StopLoss_ColorS            = "16711935"
+        StopLoss_Style             = "3"
+        StopLoss_ColorB            = "5737262"
+        StopLoss_ColorS            = "1993170"
         BreakEven_Width            = "1"
         BreakEven_Style            = "0"
         TakeProfit_ColorB          = "65280"
@@ -182,6 +188,27 @@ function MyDefault([string]$filePath) {
         BreakEven_ColorS = "17919"
         MaxHistoryDeals  = "10"
     }
+
+
+    #Read All Setting File parameters
+    $inifile = Get-IniFile($filePath)
+
+    #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
+    $CustomIndy1_Type = [int]$inifile["CustomIndy1_Type"]
+    if ($CustomIndy1_Type -ne 0) {
+        $CustomIndy1_DrawShortName = [string]$inifile["CustomIndy1_DrawShortName"]
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy1_Properties = "===== " + $CustomIndy1_DrawShortName + " ====="
+        }
+    }
+    $CustomIndy2_Type = [int]$inifile["CustomIndy2_Type"]
+    if ($CustomIndy2_Type -ne 0) {
+        $CustomIndy2_DrawShortName = [string]$inifile["CustomIndy2_DrawShortName"]
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy2_Properties = "===== " + $CustomIndy2_DrawShortName + " ====="
+        }
+    }
+
 
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "DisableTime" ) {
@@ -419,6 +446,7 @@ function MyDefault([string]$filePath) {
         }
     }
 
+    #DateTime-EUR/USD Time
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "DateTime-EUR/USD" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -461,6 +489,7 @@ function MyDefault([string]$filePath) {
         }
     }
 
+    #DateTime-XAU/USD Time
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "DateTime-XAU/USD" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -512,6 +541,7 @@ function MyDefault([string]$filePath) {
         }
     }
 
+    #MyDefault-EUR/USD Time
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "MyDefault-EUR/USD" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -554,7 +584,7 @@ function MyDefault([string]$filePath) {
         }
     }
 
-    #
+    #Default-AUD/USD Time
     if (!($comboBox.SelectedIndex -eq "-1")) {
         if ($comboBox.SelectedItem.ToString() -eq "Default-AUD/USD" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
@@ -597,24 +627,23 @@ function MyDefault([string]$filePath) {
         }
     }
 
-
     #Read All Setting File parameters
     $inifile = Get-IniFile($filePath)
 
     #Pending_Type
-    $Pending_Type = [int]$inifile["Pending_Type"]
-    if ($Pending_Type -eq 0) {
-        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            NextOrder_Width = "0"
-            Show_Pending    = "false"
-        }
-    }
-    else {
-        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-            NextOrder_Width = "1"
-            Show_Pending    = "true"
-        }
-    }
+    #$Pending_Type = [int]$inifile["Pending_Type"]
+    #if ($Pending_Type -eq 0) {
+    #    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+    #        NextOrder_Width = "0"
+    #        Show_Pending    = "false"
+    #    }
+    #}
+    #else {
+    #    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+    #        NextOrder_Width = "1"
+    #        Show_Pending    = "true"
+    #    }
+    #}
 
     #If not use StopLoss disable line
     $StopLoss = [int]$inifile["StopLoss"]
@@ -1104,6 +1133,51 @@ function MyDefault([string]$filePath) {
         }
     }
 
+    #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable Volatility Filter
+    $CustomIndy1_OpenOn = [int]$inifile["CustomIndy1_OpenOn"]
+    $CustomIndy1_MartinOn = [int]$inifile["CustomIndy1_MartinOn"]
+    $CustomIndy1_CloseOn = [int]$inifile["CustomIndy1_CloseOn"]
+    $CustomIndy1_PartialCloseOn = [int]$inifile["CustomIndy1_PartialCloseOn"]
+    $CustomIndy1_HedgeOn = [int]$inifile["CustomIndy1_HedgeOn"]
+    if (($CustomIndy1_OpenOn -eq 0) -and ($CustomIndy1_MartinOn -eq 0) -and ($CustomIndy1_CloseOn -eq 0) -and ($CustomIndy1_PartialCloseOn -eq 0) -and ($CustomIndy1_HedgeOn -eq 0)) {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy1_Type = "0"
+        }
+    }
+    #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
+    $CustomIndy1_Type = [int]$inifile["CustomIndy1_Type"]
+    if ($CustomIndy1_Mode -eq 0) {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy1_OpenOn         = "0"
+            CustomIndy1_MartinOn       = "0"
+            CustomIndy1_CloseOn        = "0"
+            CustomIndy1_PartialCloseOn = "0"
+            CustomIndy1_HedgeOn        = "0"
+        }
+    }
+
+    #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable Volatility Filter
+    $CustomIndy2_OpenOn = [int]$inifile["CustomIndy2_OpenOn"]
+    $CustomIndy2_MartinOn = [int]$inifile["CustomIndy2_MartinOn"]
+    $CustomIndy2_CloseOn = [int]$inifile["CustomIndy2_CloseOn"]
+    $CustomIndy2_PartialCloseOn = [int]$inifile["CustomIndy2_PartialCloseOn"]
+    $CustomIndy2_HedgeOn = [int]$inifile["CustomIndy2_HedgeOn"]
+    if (($CustomIndy2_OpenOn -eq 0) -and ($CustomIndy2_MartinOn -eq 0) -and ($CustomIndy2_CloseOn -eq 0) -and ($CustomIndy2_PartialCloseOn -eq 0) -and ($CustomIndy2_HedgeOn -eq 0)) {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy2_Type = "0"
+        }
+    }
+    #If not Enabled, Don't use for open/Don't use for close/Don't use for partial close
+    $CustomIndy2_Type = [int]$inifile["CustomIndy2_Type"]
+    if ($CustomIndy2_Mode -eq 0) {
+        Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+            CustomIndy2_OpenOn         = "0"
+            CustomIndy2_MartinOn       = "0"
+            CustomIndy2_CloseOn        = "0"
+            CustomIndy2_PartialCloseOn = "0"
+            CustomIndy2_HedgeOn        = "0"
+        }
+    }
 
     #If not select Open/OpenMartin/Close/Partial/HedgeOn Disable Volatility Filter
     $News_OpenOn = [int]$inifile["News_OpenOn"]
@@ -1411,6 +1485,18 @@ function ButtonRename([string]$filePath) {
         $fileNewName = $fileNewName + "FIBO2_"
     }
 
+    $CustomIndy1 = [int]$inifile["CustomIndy1_Type"]
+    if ($CustomIndy1 -ne 0) {
+        $CustomIndy1_DrawShortName = [string]$inifile["CustomIndy1_DrawShortName"]
+        $fileNewName = $fileNewName + "CustomIndy1_" + $CustomIndy1_DrawShortName + "_"
+    }
+
+    $CustomIndy2 = [int]$inifile["CustomIndy1_Type"]
+    if ($CustomIndy2 -ne 0) {
+        $CustomIndy2_DrawShortName = [string]$inifile["CustomIndy2_DrawShortName"]
+        $fileNewName = $fileNewName + "CustomIndy2_" + $CustomIndy2_DrawShortName + "_"
+    }
+
     $News = [int]$inifile["News_Mode"]
     if ($News -eq 1) {
         $fileNewName = $fileNewName + "News_"
@@ -1426,112 +1512,6 @@ function ButtonRename([string]$filePath) {
     return $true
 }
 
-function ButtonBollingerBands_1([string]$filePath) {
-
-    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
-    $PathDest = (Get-Item $filePath).BaseName + ".set"
-    $CurrentDir = Split-Path -Path "$filePath"
-    $filePathNew = "$CurrentDir\$PathDest"
-    #Copy-Item "$filePath" -Destination $filePathNew
-
-    $filePath = $filePathNew
-
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        MA_Filter_1_Properties     = "===== MA Filter #1 ====="
-        MA_Filter_1_Type           = "1"
-        MA_Filter_1_TF             = "5"
-        MA_Filter_1_Period         = "20"
-        MA_Filter_1_Method         = "1"
-        MA_Filter_1_Price          = "1"
-        MA_Filter_1_DistType       = "1"
-        MA_Filter_1_DistCoef       = "2"
-        MA_Filter_1_OpenOn         = "1"
-        MA_Filter_1_MartinOn       = "0"
-        MA_Filter_1_CloseOn        = "1"
-        MA_Filter_1_PartialCloseOn = "0"
-
-    }
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
-        VolMA_Type       = "2"
-        VolMA_TF         = "5"
-        VolMA_Period     = "20"
-    }
-
-    return $true
-}
-
-function ButtonBollingerBands_2([string]$filePath) {
-
-    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
-    $PathDest = (Get-Item $filePath).BaseName + ".set"
-    $CurrentDir = Split-Path -Path "$filePath"
-    $filePathNew = "$CurrentDir\$PathDest"
-    #Copy-Item "$filePath" -Destination $filePathNew
-
-    $filePath = $filePathNew
-
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        MA_Filter_2_Properties     = "===== MA Filter #2 ====="
-        MA_Filter_2_Type           = "1"
-        MA_Filter_2_TF             = "5"
-        MA_Filter_2_Period         = "20"
-        MA_Filter_2_Method         = "1"
-        MA_Filter_2_Price          = "1"
-        MA_Filter_2_DistType       = "1"
-        MA_Filter_2_DistCoef       = "2"
-        MA_Filter_2_OpenOn         = "1"
-        MA_Filter_2_MartinOn       = "0"
-        MA_Filter_2_CloseOn        = "1"
-        MA_Filter_2_PartialCloseOn = "0"
-
-    }
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
-        VolMA_Type       = "2"
-        VolMA_TF         = "5"
-        VolMA_Period     = "20"
-    }
-
-    return $true
-}
-
-function ButtonBollingerBands_3([string]$filePath) {
-
-    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
-    $PathDest = (Get-Item $filePath).BaseName + ".set"
-    $CurrentDir = Split-Path -Path "$filePath"
-    $filePathNew = "$CurrentDir\$PathDest"
-    #Copy-Item "$filePath" -Destination $filePathNew
-
-    $filePath = $filePathNew
-
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        MA_Filter_3_Properties     = "===== MA Filter #3 ====="
-        MA_Filter_3_Type           = "1"
-        MA_Filter_3_TF             = "5"
-        MA_Filter_3_Period         = "20"
-        MA_Filter_3_Method         = "1"
-        MA_Filter_3_Price          = "1"
-        MA_Filter_3_DistType       = "1"
-        MA_Filter_3_DistCoef       = "2"
-        MA_Filter_3_OpenOn         = "1"
-        MA_Filter_3_MartinOn       = "0"
-        MA_Filter_3_CloseOn        = "1"
-        MA_Filter_3_PartialCloseOn = "0"
-
-    }
-    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        VolMA_Properties = "===== Volatility for MA and ZigZag Filters distance ====="
-        VolMA_Type       = "2"
-        VolMA_TF         = "5"
-        VolMA_Period     = "20"
-    }
-
-    return $true
-}
-
-
 function Button2EMACross_1([string]$filePath) {
     #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
     $PathDest = (Get-Item $filePath).BaseName + ".set"
@@ -1542,7 +1522,7 @@ function Button2EMACross_1([string]$filePath) {
     $filePath = $filePathNew
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        MACD_Properties      = "===== MACD #1 ====="
+        MACD_Properties      = "===== 2 EMA Cross #1 ====="
         MACD_Type            = "1"
         MACD_TF              = "5"
         MACD_PeriodFast      = "20"
@@ -1576,7 +1556,7 @@ function Button2EMACross_2([string]$filePath) {
     $filePath = $filePathNew
 
     Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-        MACD2_Properties      = "===== MACD #2 ====="
+        MACD2_Properties      = "===== 2 EMA Cross #2 ====="
         MACD2_Type            = "1"
         MACD2_TF              = "5"
         MACD2_PeriodFast      = "20"
@@ -1599,6 +1579,522 @@ function Button2EMACross_2([string]$filePath) {
     return $true
 }
 
+#Bollinger Bands Explained
+#https://academy.binance.com/en/articles/bollinger-bands-explained
+#
+#https://admiralmarkets.com/es/education/articles/forex-strategy/bandas-de-bollinger
+#Bandas de Bollinger y RSI
+#En esta estrategia de trading vamos a utilizar los indicadores Bandas de Bollinger y RSI. El indicador RSI actúa como filtro para tratar de mejorar la efectividad de las señales generadas con las bandas de Bollinger. Esto reduce el número de operaciones, pero debería aumentar la proporción de posiciones ganadoras.
+#
+#https://www.investopedia.com/terms/b/bollingerbands.asp
+#The following traits are particular to the Bollinger Band:
+#abrupt changes in prices tend to happen after the band has contracted due to decrease of volatility;
+#if prices break through one of the bands, a continuation of the current trend is to be expected;
+#if the pikes and hollows outside the band are followed by pikes and hollows inside the band, a reverse of trend may occur;
+#the price movement that has started from one of the band’s lines usually reaches the opposite one.
+#ML = SUM (CLOSE, N) / N = SMA (CLOSE, N)
+#TL = ML + (D * StdDev)
+#BL = ML - (D * StdDev)
+function ButtonBollingerBands_1([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_1_Properties     = "===== BollingerBands #1 ====="
+        MA_Filter_1_Type           = "1"
+        MA_Filter_1_TF             = "5"
+        MA_Filter_1_Period         = "20"
+        MA_Filter_1_Method         = "0"
+        MA_Filter_1_Price          = "1"
+        MA_Filter_1_DistType       = "1"
+        MA_Filter_1_DistCoef       = "2"
+        MA_Filter_1_OpenOn         = "1"
+        MA_Filter_1_MartinOn       = "0"
+        MA_Filter_1_CloseOn        = "1"
+        MA_Filter_1_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for BollingerBands #1 ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+#https://www.metatrader5.com/en/terminal/help/indicators/trend_indicators/bb
+#https://www.investopedia.com/terms/b/bollingerbands.asp
+#The following traits are particular to the Bollinger Band:
+#abrupt changes in prices tend to happen after the band has contracted due to decrease of volatility;
+#if prices break through one of the bands, a continuation of the current trend is to be expected;
+#if the pikes and hollows outside the band are followed by pikes and hollows inside the band, a reverse of trend may occur;
+#the price movement that has started from one of the band’s lines usually reaches the opposite one.
+#ML = SUM (CLOSE, N) / N = SMA (CLOSE, N)
+#TL = ML + (D * StdDev)
+#BL = ML - (D * StdDev)
+function ButtonBollingerBands_2([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_2_Properties     = "===== BollingerBands #2 ====="
+        MA_Filter_2_Type           = "1"
+        MA_Filter_2_TF             = "5"
+        MA_Filter_2_Period         = "20"
+        MA_Filter_2_Method         = "0"
+        MA_Filter_2_Price          = "1"
+        MA_Filter_2_DistType       = "1"
+        MA_Filter_2_DistCoef       = "2"
+        MA_Filter_2_OpenOn         = "1"
+        MA_Filter_2_MartinOn       = "0"
+        MA_Filter_2_CloseOn        = "1"
+        MA_Filter_2_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for BollingerBands #2 ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/b/bollingerbands.asp
+#The following traits are particular to the Bollinger Band:
+#abrupt changes in prices tend to happen after the band has contracted due to decrease of volatility;
+#if prices break through one of the bands, a continuation of the current trend is to be expected;
+#if the pikes and hollows outside the band are followed by pikes and hollows inside the band, a reverse of trend may occur;
+#the price movement that has started from one of the band’s lines usually reaches the opposite one.
+#ML = SUM (CLOSE, N) / N = SMA (CLOSE, N)
+#TL = ML + (D * StdDev)
+#BL = ML - (D * StdDev)
+function ButtonBollingerBands_3([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_3_Properties     = "===== BollingerBands #3 ====="
+        MA_Filter_3_Type           = "1"
+        MA_Filter_3_TF             = "5"
+        MA_Filter_3_Period         = "20"
+        MA_Filter_3_Method         = "0"
+        MA_Filter_3_Price          = "1"
+        MA_Filter_3_DistType       = "1"
+        MA_Filter_3_DistCoef       = "2"
+        MA_Filter_3_OpenOn         = "1"
+        MA_Filter_3_MartinOn       = "0"
+        MA_Filter_3_CloseOn        = "1"
+        MA_Filter_3_PartialCloseOn = "0"
+
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for BollingerBands #3 ====="
+        VolMA_Type       = "2"
+        VolMA_TF         = "5"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+
+#https://www.mql5.com/en/market/product/79942?source=Site+Search#description
+#BB Squeeze MT5
+#KT BB Squeeze measures the contraction and expansion of market volatility with a momentum oscillator, which can be used to decide a trading direction. It measures the squeeze in volatility by deducing the relationship between the Bollinger Bands and Keltner channels.
+#Momentum(20)
+#Bollinger Bands Period(20)
+#Bollinger Bands Deviation(2.0)
+#Keltner Channels Period (20)
+#Keltner Channels Multiplication (1.5)
+#The gray dots represent the period of low volatility when Bollinger Bands are inside the Keltner channels.
+#The white dots represent the period of high volatility when Bollinger Bands are outside the Keltner channels.
+
+
+#Keltner Channel - indicator for MetaTrader 5
+#https://www.mql5.com/en/code/399
+#
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+#Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.
+#The Keltner channel uses the average-true range (ATR) or volatility, with breaks above or below the top and bottom barriers signaling a continuation.
+#Keltner Channel Calculation
+#Keltner Channel Middle Line=EMA
+#Keltner Channel Upper Band=EMA+2∗ATR
+#Keltner Channel Lower Band=EMA−2∗ATR
+#The exponential moving average (EMA) of a Keltner Channel is typically 20 periods, although this can be adjusted if desired.
+#The upper and lower bands are typically set two times the average true range (ATR) above and below the EMA, although the multiplier can also be adjusted based on personal preference.
+#Price reaching the upper Keltner Channel band is bullish, while reaching the lower band is bearish.
+#The angle of the Keltner Channel also aids in identifying the trend direction. The price may also oscillate between the upper and lower Keltner Channel bands, which can be interpreted as resistance and support levels.
+
+#Good Result
+#TF=1M
+#Smoothed(20) + 2*ATR(20)
+#EMA(20) + 2*ATR(10)
+function ButtonKeltnerChannel_1([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_1_Properties     = "===== Keltner Channel #1 ====="
+        MA_Filter_1_Type           = "1"
+        MA_Filter_1_TF             = "1"
+        MA_Filter_1_Period         = "20"
+        MA_Filter_1_Method         = "1"
+        MA_Filter_1_Price          = "1"
+        MA_Filter_1_DistType       = "1"
+        MA_Filter_1_DistCoef       = "2"
+        MA_Filter_1_OpenOn         = "1"
+        MA_Filter_1_MartinOn       = "0"
+        MA_Filter_1_CloseOn        = "1"
+        MA_Filter_1_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Keltner Channel #1 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "10"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+#Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.
+#The Keltner channel uses the average-true range (ATR) or volatility, with breaks above or below the top and bottom barriers signaling a continuation.
+#Keltner Channel Calculation
+#Keltner Channel Middle Line=EMA
+#Keltner Channel Upper Band=EMA+2∗ATR
+#Keltner Channel Lower Band=EMA−2∗ATR
+#The exponential moving average (EMA) of a Keltner Channel is typically 20 periods, although this can be adjusted if desired.
+#The upper and lower bands are typically set two times the average true range (ATR) above and below the EMA, although the multiplier can also be adjusted based on personal preference.
+#Price reaching the upper Keltner Channel band is bullish, while reaching the lower band is bearish.
+#The angle of the Keltner Channel also aids in identifying the trend direction. The price may also oscillate between the upper and lower Keltner Channel bands, which can be interpreted as resistance and support levels.
+function ButtonKeltnerChannel_2([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_2_Properties     = "===== Keltner Channel #2 ====="
+        MA_Filter_2_Type           = "1"
+        MA_Filter_2_TF             = "1"
+        MA_Filter_2_Period         = "20"
+        MA_Filter_2_Method         = "1"
+        MA_Filter_2_Price          = "1"
+        MA_Filter_2_DistType       = "1"
+        MA_Filter_2_DistCoef       = "2"
+        MA_Filter_2_OpenOn         = "1"
+        MA_Filter_2_MartinOn       = "0"
+        MA_Filter_2_CloseOn        = "1"
+        MA_Filter_2_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Keltner Channel #2 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "20"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+#Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.
+#The Keltner channel uses the average-true range (ATR) or volatility, with breaks above or below the top and bottom barriers signaling a continuation.
+#Keltner Channel Calculation
+#Keltner Channel Middle Line=EMA
+#Keltner Channel Upper Band=EMA+2∗ATR
+#Keltner Channel Lower Band=EMA−2∗ATR
+#The exponential moving average (EMA) of a Keltner Channel is typically 20 periods, although this can be adjusted if desired.
+#The upper and lower bands are typically set two times the average true range (ATR) above and below the EMA, although the multiplier can also be adjusted based on personal preference.
+#Price reaching the upper Keltner Channel band is bullish, while reaching the lower band is bearish.
+#The angle of the Keltner Channel also aids in identifying the trend direction. The price may also oscillate between the upper and lower Keltner Channel bands, which can be interpreted as resistance and support levels.
+function ButtonKeltnerChannel_3([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_3_Properties     = "===== Keltner Channel #3 ====="
+        MA_Filter_3_Type           = "1"
+        MA_Filter_3_TF             = "1"
+        MA_Filter_3_Period         = "20"
+        MA_Filter_3_Method         = "0"
+        MA_Filter_3_Price          = "1"
+        MA_Filter_3_DistType       = "1"
+        MA_Filter_3_DistCoef       = "2"
+        MA_Filter_3_OpenOn         = "1"
+        MA_Filter_3_MartinOn       = "0"
+        MA_Filter_3_CloseOn        = "1"
+        MA_Filter_3_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Keltner Channel #3 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "10"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/s/starc.asp
+#Stoller Average Range Channel
+#STARC Band +=SMA+(Multiplier×ATR)
+#STARC Band −=SMA−(Multiplier×ATR)
+function ButtonSTARC_1([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_1_Properties     = "===== Stoller Average Range Channel #1 ====="
+        MA_Filter_1_Type           = "1"
+        MA_Filter_1_TF             = "1"
+        MA_Filter_1_Period         = "20"
+        MA_Filter_1_Method         = "0"
+        MA_Filter_1_Price          = "1"
+        MA_Filter_1_DistType       = "1"
+        MA_Filter_1_DistCoef       = "2"
+        MA_Filter_1_OpenOn         = "1"
+        MA_Filter_1_MartinOn       = "0"
+        MA_Filter_1_CloseOn        = "1"
+        MA_Filter_1_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Stoller Average Range Channel #1 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "10"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/s/starc.asp
+#Stoller Average Range Channel
+#STARC Band +=SMA+(Multiplier×ATR)
+#STARC Band −=SMA−(Multiplier×ATR)
+function ButtonSTARC_2([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_2_Properties     = "===== Stoller Average Range Channel #2 ====="
+        MA_Filter_2_Type           = "1"
+        MA_Filter_2_TF             = "1"
+        MA_Filter_2_Period         = "20"
+        MA_Filter_2_Method         = "0"
+        MA_Filter_2_Price          = "1"
+        MA_Filter_2_DistType       = "1"
+        MA_Filter_2_DistCoef       = "2"
+        MA_Filter_2_OpenOn         = "1"
+        MA_Filter_2_MartinOn       = "0"
+        MA_Filter_2_CloseOn        = "1"
+        MA_Filter_2_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Stoller Average Range Channel #2 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "10"
+    }
+
+    return $true
+}
+
+#https://www.investopedia.com/terms/s/starc.asp
+#Stoller Average Range Channel
+#STARC Band +=SMA+(Multiplier×ATR)
+#STARC Band −=SMA−(Multiplier×ATR)
+function ButtonSTARC_3([string]$filePath) {
+
+    #$PathDest = (Get-Item $filePath).BaseName + "-Optimized.set"
+    $PathDest = (Get-Item $filePath).BaseName + ".set"
+    $CurrentDir = Split-Path -Path "$filePath"
+    $filePathNew = "$CurrentDir\$PathDest"
+    #Copy-Item "$filePath" -Destination $filePathNew
+
+    $filePath = $filePathNew
+
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        MA_Filter_3_Properties     = "===== Stoller Average Range Channel #3 ====="
+        MA_Filter_3_Type           = "1"
+        MA_Filter_3_TF             = "1"
+        MA_Filter_3_Period         = "20"
+        MA_Filter_3_Method         = "1"
+        MA_Filter_3_Price          = "1"
+        MA_Filter_3_DistType       = "1"
+        MA_Filter_3_DistCoef       = "2"
+        MA_Filter_3_OpenOn         = "1"
+        MA_Filter_3_MartinOn       = "0"
+        MA_Filter_3_CloseOn        = "1"
+        MA_Filter_3_PartialCloseOn = "0"
+    }
+    Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+        VolMA_Properties = "===== Volatility for Stoller Average Range Channel #3 ====="
+        VolMA_Type       = "1"
+        VolMA_TF         = "1"
+        VolMA_Period     = "10"
+    }
+
+    return $true
+}
+
+function ButtonCustomIndy_1([string]$filePath) {
+
+    #CustomIndy #1
+    if (!($comboBox1.SelectedIndex -eq "-1")) {
+        if ($comboBox1.SelectedItem.ToString() -eq "SuperTrend" ) {
+
+            #SuperTrend
+            #https://www.mql5.com/en/code/576
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                CustomIndy1_Label                = "SuperTrend Label"
+                CustomIndy1_Type                 = "3"
+                CustomIndy1_TF                   = "5"
+                CustomIndy1_PathAndName          = "supertrend"
+                CustomIndy1_ParametersStr        = "10,3,0"
+                CustomIndy1_BufferB              = "2"
+                CustomIndy1_BufferS              = "2"
+                CustomIndy1_ColorBufferB         = "3"
+                CustomIndy1_ColorBufferS         = "3"
+                CustomIndy1_ColorIndexB          = "0"
+                CustomIndy1_ColorIndexS          = "1"
+                CustomIndy1_LevelMaxB            = "-999"
+                CustomIndy1_LevelMinB            = "-999"
+                CustomIndy1_LevelMaxS            = "-999"
+                CustomIndy1_LevelMinS            = "-999"
+                CustomIndy1_Reverse              = "false"
+                CustomIndy1_UseClosedBars        = "true"
+                CustomIndy1_DrawShortName        = "Supertrend"
+                CustomIndy1_DrawInSubwindow      = "false"
+                CustomIndy1_AllowNegativeAndZero = "true"
+                CustomIndy1_OpenOn               = "1"
+                CustomIndy1_MartinOn             = "0"
+                CustomIndy1_HedgeOn              = "0"
+                CustomIndy1_CloseOn              = "2"
+                CustomIndy1_PartialCloseOn       = "0"
+            }
+
+            #Read All Setting File parameters
+            $inifile = Get-IniFile($filePath)
+
+            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
+            $CustomIndy1_Type = [int]$inifile["CustomIndy1_Type"]
+            if ($CustomIndy1_Type -ne 0) {
+                $CustomIndy1_DrawShortName = [string]$inifile["CustomIndy1_DrawShortName"]
+                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                    CustomIndy1_Properties = "===== " + $CustomIndy1_DrawShortName + " #1 ====="
+                }
+            }
+        }
+    }
+
+    return $true
+}
+
+function ButtonCustomIndy_2([string]$filePath) {
+
+    #CustomIndy #2
+    if (!($comboBox2.SelectedIndex -eq "-1")) {
+        if ($comboBox2.SelectedItem.ToString() -eq "SuperTrend" ) {
+
+            #SuperTrend
+            #https://www.mql5.com/en/code/576
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                CustomIndy2_Label                = "SuperTrend Label"
+                CustomIndy2_Type                 = "3"
+                CustomIndy2_TF                   = "5"
+                CustomIndy2_PathAndName          = "supertrend"
+                CustomIndy2_ParametersStr        = "10,3,0"
+                CustomIndy2_BufferB              = "2"
+                CustomIndy2_BufferS              = "2"
+                CustomIndy2_ColorBufferB         = "3"
+                CustomIndy2_ColorBufferS         = "3"
+                CustomIndy2_ColorIndexB          = "0"
+                CustomIndy2_ColorIndexS          = "1"
+                CustomIndy2_LevelMaxB            = "-999"
+                CustomIndy2_LevelMinB            = "-999"
+                CustomIndy2_LevelMaxS            = "-999"
+                CustomIndy2_LevelMinS            = "-999"
+                CustomIndy2_Reverse              = "false"
+                CustomIndy2_UseClosedBars        = "true"
+                CustomIndy2_DrawShortName        = "Supertrend"
+                CustomIndy2_DrawInSubwindow      = "false"
+                CustomIndy2_AllowNegativeAndZero = "true"
+                CustomIndy2_OpenOn               = "1"
+                CustomIndy2_MartinOn             = "0"
+                CustomIndy2_HedgeOn              = "0"
+                CustomIndy2_CloseOn              = "2"
+                CustomIndy2_PartialCloseOn       = "0"
+            }
+
+            #Read All Setting File parameters
+            $inifile = Get-IniFile($filePath)
+
+            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
+            $CustomIndy2_Type = [int]$inifile["CustomIndy2_Type"]
+            if ($CustomIndy2_Type -ne 0) {
+                $CustomIndy2_DrawShortName = [string]$inifile["CustomIndy2_DrawShortName"]
+                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                    CustomIndy2_Properties = "===== " + $CustomIndy2_DrawShortName + " #2 ====="
+                }
+            }
+        }
+    }
+
+
+    return $true
+}
 #######################GUI################################################################
 ### API Windows Forms ###
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
@@ -1606,8 +2102,8 @@ function Button2EMACross_2([string]$filePath) {
 
 ### Create form ###
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "My Defaults And Rename Strategy - CommunityPower EA"
-$form.Size = '600,350'
+$form.Text = "My Defaults, Rename Setting File and Create Indicators - CommunityPower EA"
+$form.Size = '800,500'
 $form.StartPosition = "CenterScreen"
 $form.MinimumSize = $form.Size
 $form.MaximizeBox = $False
@@ -1617,10 +2113,28 @@ $form.Topmost = $True
 # Combobox
 $setTimes = @("DisableTime", "ASIA(Tokyo/Hong Kong/Singapore)", "EUROPA(Frankfurt/London)" , "AMERICA(New York/Chicago)", "PACIFICO(Wellington/Sidney)", "DateTime-EUR/USD", "DateTime-XAU/USD", "MyDefault-EUR/USD")
 $comboBox = New-Object System.Windows.Forms.ComboBox
-$comboBox.Location = '220, 10'
-$comboBox.Size = '300, 50'
+$comboBox.Location = '280,10'
+$comboBox.Size = '280,50'
 foreach ($setTime in $setTimes) {
     $comboBox.Items.add($setTime)
+}
+
+# Combobox
+$CustomIndy1 = @("SuperTrend")
+$comboBox1 = New-Object System.Windows.Forms.ComboBox
+$comboBox1.Location = '370,100'
+$comboBox1.Size = '190,50'
+foreach ($setIndy1 in $CustomIndy1) {
+    $comboBox1.Items.add($setIndy1)
+}
+
+# Combobox
+$CustomIndy2 = @("SuperTrend")
+$comboBox2 = New-Object System.Windows.Forms.ComboBox
+$comboBox2.Location = '370,120'
+$comboBox2.Size = '190,50'
+foreach ($setIndy2 in $CustomIndy2) {
+    $comboBox2.Items.add($setIndy2)
 }
 
 # Button
@@ -1649,46 +2163,136 @@ $button4 = New-Object System.Windows.Forms.Button
 $button4.Location = '5,100'
 $button4.Size = '75,20'
 $button4.Width = 250
-$button4.Text = "BollingerBands #1 (MA #1 && Volatility)"
+$button4.Text = "EMA Cross #1 / Fast:20 - Slow:50 (MACD #1)"
 
 # Button
 $button5 = New-Object System.Windows.Forms.Button
 $button5.Location = '5,120'
 $button5.Size = '75,20'
 $button5.Width = 250
-$button5.Text = "BollingerBands #2 (MA #2 && Volatility)"
+$button5.Text = "EMA Cross #2 / Fast:20 - Slow:50 (MACD #2)"
 
 # Button
 $button6 = New-Object System.Windows.Forms.Button
-$button6.Location = '5,140'
+$button6.Location = '5,160'
 $button6.Size = '75,20'
 $button6.Width = 250
-$button6.Text = "BollingerBands #3 (MA #3 && Volatility)"
+$button6.Text = "Bollinger Bands #1 (MA #1 && Volatility)"
 
 # Button
 $button7 = New-Object System.Windows.Forms.Button
-$button7.Location = '5,160'
+$button7.Location = '5,180'
 $button7.Size = '75,20'
 $button7.Width = 250
-$button7.Text = "EMA Cross #1 / Fast:20 - Slow:50 (MACD #1)"
+$button7.Text = "Bollinger Bands #2 (MA #2 && Volatility)"
 
 # Button
 $button8 = New-Object System.Windows.Forms.Button
-$button8.Location = '5,180'
+$button8.Location = '5,200'
 $button8.Size = '75,20'
 $button8.Width = 250
-$button8.Text = "EMA Cross #2 / Fast:20 - Slow:50 (MACD #2)"
+$button8.Text = "Bollinger Bands #3 (MA #3 && Volatility)"
+
+# Button
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+$button9 = New-Object System.Windows.Forms.Button
+$button9.Location = '5,240'
+$button9.Size = '75,20'
+$button9.Width = 250
+$button9.Text = "Keltner Channel #1 (MA #1 && Volatility)"
+
+# Button
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+$button10 = New-Object System.Windows.Forms.Button
+$button10.Location = '5,260'
+$button10.Size = '75,20'
+$button10.Width = 250
+$button10.Text = "Keltner Channel #2 (MA #2 && Volatility)"
+
+# Button
+#https://www.investopedia.com/terms/k/keltnerchannel.asp
+$button11 = New-Object System.Windows.Forms.Button
+$button11.Location = '5,280'
+$button11.Size = '75,20'
+$button11.Width = 250
+$button11.Text = "Keltner Channel #3 (MA #3 && Volatility)"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button12 = New-Object System.Windows.Forms.Button
+$button12.Location = '5,320'
+$button12.Size = '75,20'
+$button12.Width = 300
+$button12.Text = "Stoller Average Range Channel #1 (MA #1 && Volatility)"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button13 = New-Object System.Windows.Forms.Button
+$button13.Location = '5,340'
+$button13.Size = '75,20'
+$button13.Width = 300
+$button13.Text = "Stoller Average Range Channel #2 (MA #2 && Volatility)"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button14 = New-Object System.Windows.Forms.Button
+$button14.Location = '5,360'
+$button14.Size = '75,20'
+$button14.Width = 300
+$button14.Text = "Stoller Average Range Channel #3 (MA #3 && Volatility)"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button14 = New-Object System.Windows.Forms.Button
+$button14.Location = '5,360'
+$button14.Size = '75,20'
+$button14.Width = 300
+$button14.Text = "Stoller Average Range Channel #3 (MA #3 && Volatility)"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button15 = New-Object System.Windows.Forms.Button
+$button15.Location = '580,100'
+$button15.Size = '75,20'
+$button15.Width = 120
+$button15.Text = "Apply CustomIndy #1"
+
+# Button
+# https://www.investopedia.com/terms/s/starc.asp
+$button16 = New-Object System.Windows.Forms.Button
+$button16.Location = '580,120'
+$button16.Size = '75,20'
+$button16.Width = 120
+$button16.Text = "Apply CustomIndy #2"
 
 # Label
 $label = New-Object System.Windows.Forms.Label
-$label.Location = '5,200'
+$label.Location = '220,12'
 $label.AutoSize = $True
-$label.Text = "Drag and Drop files settings here:"
+$label.Text = "Date Time:"
+
+# Label
+$label1 = New-Object System.Windows.Forms.Label
+$label1.Location = '280,100'
+$label1.AutoSize = $True
+$label1.Text = "CustomIndy #1:"
+
+# Label
+$label2 = New-Object System.Windows.Forms.Label
+$label2.Location = '280,120'
+$label2.AutoSize = $True
+$label2.Text = "CustomIndy #2:"
+
+# Label
+$label3 = New-Object System.Windows.Forms.Label
+$label3.Location = '5,380'
+$label3.AutoSize = $True
+$label3.Text = "Drag and Drop files settings here:"
 
 # Listbox
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = '5,220'
-$listBox.Height = 70
+$listBox.Location = '5,400'
+$listBox.Height = 40
 $listBox.Width = 550
 $listBox.Anchor = ([System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right -bor [System.Windows.Forms.AnchorStyles]::Top)
 $listBox.IntegralHeight = $False
@@ -1708,14 +2312,27 @@ $form.Controls.Add($button5)
 $form.Controls.Add($button6)
 $form.Controls.Add($button7)
 $form.Controls.Add($button8)
-$form.Controls.Add($checkbox)
+$form.Controls.Add($button9)
+$form.Controls.Add($button10)
+$form.Controls.Add($button11)
+$form.Controls.Add($button12)
+$form.Controls.Add($button13)
+$form.Controls.Add($button14)
+$form.Controls.Add($button15)
+$form.Controls.Add($button16)
 $form.Controls.Add($label)
+$form.Controls.Add($label1)
+$form.Controls.Add($label2)
+$form.Controls.Add($label3)
 $form.Controls.Add($listBox)
 $form.Controls.Add($statusBar)
 $form.Controls.Add($comboBox)
+$form.Controls.Add($comboBox1)
+$form.Controls.Add($comboBox2)
 $form.ResumeLayout()
 
 ### Write event handlers ###
+#Defaults
 $button_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
@@ -1725,10 +2342,10 @@ $button_Click = {
             }
         }
     }
-
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
 }
 
+#Rename
 $button2_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
@@ -1738,87 +2355,185 @@ $button2_Click = {
             }
         }
     }
-
     $statusBar.Text = ("$($listBox.Items.Count) files renamed")
 }
 
+# Clear ListBox
 $button3_Click = {
     $listBox.Items.Clear()
 }
 
+#MA cross
 $button4_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (ButtonBollingerBands_1 -filePath $item) {
-                [System.Windows.Forms.MessageBox]::Show('BollingerBands #1 Apply', 'BollingerBands #1', 0, 64)
+            if (Button2EMACross_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('MA cross signal #1 Applied', 'MA cross signal #1', 0, 64)
             }
         }
     }
-
-    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #1 Apply")
-
+    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #1 Applied")
 }
 
+#MA cross
 $button5_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (ButtonBollingerBands_2 -filePath $item) {
-                [System.Windows.Forms.MessageBox]::Show('BollingerBands #2 Apply', 'BollingerBands #2', 0, 64)
+            if (Button2EMACross_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('MA cross signal #2 Applied', 'MA cross signal #2', 0, 64)
             }
         }
     }
-
-    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #2 Apply")
-
+    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #2 Applied")
 }
 
+#BollingerBands
 $button6_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (ButtonBollingerBands_3 -filePath $item) {
-                [System.Windows.Forms.MessageBox]::Show('BollingerBands #3 Apply', 'BollingerBands #3', 0, 64)
+            if (ButtonBollingerBands_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #1 Applied', 'BollingerBands #1', 0, 64)
             }
         }
     }
-
-    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #3 Apply")
-
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #1 Applied")
 }
 
+#BollingerBands
 $button7_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (Button2EMACross_1 -filePath $item) {
-                [System.Windows.Forms.MessageBox]::Show('MA cross signal #1 Apply', 'MA cross signal #1', 0, 64)
+            if (ButtonBollingerBands_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #2 Applied', 'BollingerBands #2', 0, 64)
             }
         }
     }
-
-    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #1 Apply")
-
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #2 Applied")
 }
 
+#BollingerBands
 $button8_Click = {
     foreach ($item in $listBox.Items) {
         $i = Get-Item -LiteralPath $item
         if (!($i -is [System.IO.DirectoryInfo])) {
-            if (Button2EMACross_2 -filePath $item) {
-                [System.Windows.Forms.MessageBox]::Show('MA cross signal #2 Apply', 'MA cross signal #2', 0, 64)
+            if (ButtonBollingerBands_3 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('BollingerBands #3 Applied', 'BollingerBands #3', 0, 64)
             }
         }
     }
+    $statusBar.Text = ("$($listBox.Items.Count) BollingerBands #3 Applied")
+}
 
-    $statusBar.Text = ("$($listBox.Items.Count) MA cross signal #2 Apply")
+#Keltner Channel
+$button9_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonKeltnerChannel_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Keltner Channel #1 Applied', 'Keltner Channel #1', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Keltner Channel #1 Applied")
+}
 
+#Keltner Channel
+$button10_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonKeltnerChannel_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Keltner Channel #2 Applied', 'Keltner Channel #2', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Keltner Channel #2 Applied")
+}
+
+#Keltner Channel
+$button11_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonKeltnerChannel_3 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Keltner Channel #3 Applied', 'Keltner Channel #3', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Keltner Channel #3 Applied")
+}
+
+#STARC Bands
+$button12_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonSTARC_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Stoller Average Range Channel #1 Applied', 'Stoller Average Range Channel #1', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Stoller Average Range Channel #1 Applied")
+}
+
+#STARC Bands
+$button13_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonSTARC_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Stoller Average Range Channel #2 Applied', 'Stoller Average Range Channel #2', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Stoller Average Range Channel #2 Applied")
+}
+
+#STARC Bands
+$button14_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonSTARC_3 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('Stoller Average Range Channel #3 Applied', 'Stoller Average Range Channel #3', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) Stoller Average Range Channel #3 Applied")
+}
+
+#Apply CustomIndy 1
+$button15_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonCustomIndy_1 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('CustomIndy #1 Applied', 'CustomIndy #1', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) CustomIndy #1 Applied")
+}
+
+#Apply CustomIndy 2
+$button16_Click = {
+    foreach ($item in $listBox.Items) {
+        $i = Get-Item -LiteralPath $item
+        if (!($i -is [System.IO.DirectoryInfo])) {
+            if (ButtonCustomIndy_2 -filePath $item) {
+                [System.Windows.Forms.MessageBox]::Show('CustomIndy #2 Applied', 'CustomIndy #2', 0, 64)
+            }
+        }
+    }
+    $statusBar.Text = ("$($listBox.Items.Count) CustomIndy #2 Applied")
 }
 
 $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
     if ($_.Data.GetDataPresent([Windows.Forms.DataFormats]::FileDrop)) {
-        # $_ = [System.Windows.Forms.DragEventArgs]
         $_.Effect = 'Copy'
     }
     else {
@@ -1828,7 +2543,6 @@ $listBox_DragOver = [System.Windows.Forms.DragEventHandler] {
 
 $listBox_DragDrop = [System.Windows.Forms.DragEventHandler] {
     foreach ($filename in $_.Data.GetData([Windows.Forms.DataFormats]::FileDrop)) {
-        # $_ = [System.Windows.Forms.DragEventArgs]
         $listBox.Items.Add($filename)
     }
     $statusBar.Text = ("List contains $($listBox.Items.Count) items")
@@ -1843,6 +2557,16 @@ $button5.Add_Click($button5_Click)
 $button6.Add_Click($button6_Click)
 $button7.Add_Click($button7_Click)
 $button8.Add_Click($button8_Click)
+$button9.Add_Click($button9_Click)
+$button10.Add_Click($button10_Click)
+$button11.Add_Click($button11_Click)
+$button12.Add_Click($button12_Click)
+$button13.Add_Click($button13_Click)
+$button14.Add_Click($button14_Click)
+#Apply CustomIndy
+$button15.Add_Click($button15_Click)
+$button16.Add_Click($button16_Click)
+
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
 
