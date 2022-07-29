@@ -1,22 +1,21 @@
 # Defaults Settings for Production (live) Setting File
 #
 # Autor: Ulises Cune (@Ulises2k)
-# v2.5
-# Changelog: Support CP 2.46 (ADX)
 #
-# !!!! It version is for CommunityPower EA v2.38 !!!!
-#Correlaciones
-#https://www.mataf.net/es/forex/tools/correlation
-
+#
+# !!!! It version is for CommunityPower EA !!!!
+#
 #
 # Windows 2008
 # Set-ExecutionPolicy RemoteSigned
+#
 # Windows 2008
 # Set-ExecutionPolicy Restricted
-
+#
 #RUN, open "cmd.exe" and write this:
 #powershell -ExecutionPolicy Bypass -File "CommunityPowerEA_MyDefault.ps1"
-
+#
+#
 Function Get-IniFile ($file) {
     $ini = [ordered]@{}
     switch -regex -file $file {
@@ -38,6 +37,7 @@ Function Get-IniFile ($file) {
     $ini
 }
 
+
 function Set-OrAddIniValue {
     Param(
         [string]$FilePath,
@@ -56,7 +56,10 @@ function Set-OrAddIniValue {
 
     $content | Set-Content $FilePath
 }
-
+#
+#Correlaciones
+#https://www.mataf.net/es/forex/tools/correlation
+#
 #; My Defaults
 function MyDefault([string]$filePath) {
 
@@ -1997,10 +2000,19 @@ function ButtonCustomIndy_1([string]$filePath) {
 
     #CustomIndy #1
     if (!($comboBox1.SelectedIndex -eq "-1")) {
-        if ($comboBox1.SelectedItem.ToString() -eq "SuperTrend" ) {
 
-            #SuperTrend
-            #https://www.mql5.com/en/code/576
+        #SuperTrend
+        #https://www.mql5.com/en/code/576
+        #SetIndexBuffer(0,Filled_a,INDICATOR_DATA);
+        #SetIndexBuffer(1,Filled_b,INDICATOR_DATA);
+        #SetIndexBuffer(2,SuperTrend,INDICATOR_DATA);
+        #SetIndexBuffer(3,ColorBuffer,INDICATOR_COLOR_INDEX);
+        #SetIndexBuffer(4,Atr,INDICATOR_CALCULATIONS);
+        #SetIndexBuffer(5,Up,INDICATOR_CALCULATIONS);
+        #SetIndexBuffer(6,Down,INDICATOR_CALCULATIONS);
+        #SetIndexBuffer(7,Middle,INDICATOR_CALCULATIONS);
+        #SetIndexBuffer(8,trend,INDICATOR_CALCULATIONS);
+        if ($comboBox1.SelectedItem.ToString() -eq "SuperTrend" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
                 CustomIndy1_Label                = "SuperTrend Label"
                 CustomIndy1_Type                 = "3"
@@ -2028,22 +2040,50 @@ function ButtonCustomIndy_1([string]$filePath) {
                 CustomIndy1_CloseOn              = "2"
                 CustomIndy1_PartialCloseOn       = "0"
             }
+        }
 
-            #Read All Setting File parameters
-            $inifile = Get-IniFile($filePath)
-
-            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
-            $CustomIndy1_Type = [int]$inifile["CustomIndy1_Type"]
-            if ($CustomIndy1_Type -ne 0) {
-                $CustomIndy1_DrawShortName = [string]$inifile["CustomIndy1_DrawShortName"]
-                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-                    CustomIndy1_Properties = "===== " + $CustomIndy1_DrawShortName + " #1 ====="
-                }
+        #Bollinger bands breakout
+        #https://www.mql5.com/en/code/24612
+        #SetIndexBuffer(0,fupu    ,INDICATOR_DATA);
+        #SetIndexBuffer(1,fupd    ,INDICATOR_DATA);
+        #SetIndexBuffer(2,fdnu    ,INDICATOR_DATA);
+        #SetIndexBuffer(3,fdnd    ,INDICATOR_DATA);
+        #SetIndexBuffer(4,bufferUp,INDICATOR_DATA);
+        #SetIndexBuffer(5,bufferDn,INDICATOR_DATA);
+        #SetIndexBuffer(6,bufferMe,INDICATOR_DATA);
+        #SetIndexBuffer(7,breakup ,INDICATOR_DATA); PlotIndexSetInteger(5,PLOT_ARROW,217); PlotIndexSetInteger(5,PLOT_ARROW_SHIFT,-10);
+        #SetIndexBuffer(8,breakdn ,INDICATOR_DATA);
+        if ($comboBox1.SelectedItem.ToString() -eq "Bollinger bands breakout" ) {
+            Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                CustomIndy1_Label                = "Bollinger bands breakout"
+                CustomIndy1_Type                 = "3"
+                CustomIndy1_TF                   = "5"
+                CustomIndy1_PathAndName          = "Bollinger bands breakout"
+                CustomIndy1_ParametersStr        = "20,1,2.0,20.0,1"
+                CustomIndy1_BufferB              = "7"
+                CustomIndy1_BufferS              = "8"
+                CustomIndy1_ColorBufferB         = "-1"
+                CustomIndy1_ColorBufferS         = "-1"
+                CustomIndy1_ColorIndexB          = "-1"
+                CustomIndy1_ColorIndexS          = "-1"
+                CustomIndy1_LevelMaxB            = "-999"
+                CustomIndy1_LevelMinB            = "-999"
+                CustomIndy1_LevelMaxS            = "-999"
+                CustomIndy1_LevelMinS            = "-999"
+                CustomIndy1_Reverse              = "false"
+                CustomIndy1_UseClosedBars        = "true"
+                CustomIndy1_DrawShortName        = "Bollinger bands breakout"
+                CustomIndy1_DrawInSubwindow      = "false"
+                CustomIndy1_OpenOn               = "1"
+                CustomIndy1_MartinOn             = "0"
+                CustomIndy1_HedgeOn              = "0"
+                CustomIndy1_CloseOn              = "2"
+                CustomIndy1_PartialCloseOn       = "0"
             }
         }
 
+        #Disable Custom Indicator
         if ($comboBox1.SelectedItem.ToString() -eq "DisableCustomIndy" ) {
-            #Disable Custom Indicator
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
                 CustomIndy1_Properties           = "===== Custom Indy #1 ====="
                 CustomIndy1_Label                = "Custom Indicator Label"
@@ -2073,6 +2113,21 @@ function ButtonCustomIndy_1([string]$filePath) {
                 CustomIndy1_PartialCloseOn       = "0"
             }
         }
+
+        if (!($comboBox1.SelectedItem.ToString() -eq "DisableCustomIndy" )) {
+            #Read All Setting File parameters
+            $inifile = Get-IniFile($filePath)
+
+            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
+            $CustomIndy1_Type = [int]$inifile["CustomIndy1_Type"]
+            if ($CustomIndy1_Type -ne 0) {
+                $CustomIndy1_DrawShortName = [string]$inifile["CustomIndy1_DrawShortName"]
+                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                    CustomIndy1_Properties = "===== " + $CustomIndy1_DrawShortName + " #1 ====="
+                }
+            }
+        }
+
     }
     return $true
 }
@@ -2085,10 +2140,10 @@ function ButtonCustomIndy_2([string]$filePath) {
 
     #CustomIndy #2
     if (!($comboBox2.SelectedIndex -eq "-1")) {
-        if ($comboBox2.SelectedItem.ToString() -eq "SuperTrend" ) {
 
-            #SuperTrend
-            #https://www.mql5.com/en/code/576
+        #SuperTrend
+        #https://www.mql5.com/en/code/576
+        if ($comboBox2.SelectedItem.ToString() -eq "SuperTrend" ) {
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
                 CustomIndy2_Label                = "SuperTrend Label"
                 CustomIndy2_Type                 = "3"
@@ -2116,22 +2171,10 @@ function ButtonCustomIndy_2([string]$filePath) {
                 CustomIndy2_CloseOn              = "2"
                 CustomIndy2_PartialCloseOn       = "0"
             }
-
-            #Read All Setting File parameters
-            $inifile = Get-IniFile($filePath)
-
-            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
-            $CustomIndy2_Type = [int]$inifile["CustomIndy2_Type"]
-            if ($CustomIndy2_Type -ne 0) {
-                $CustomIndy2_DrawShortName = [string]$inifile["CustomIndy2_DrawShortName"]
-                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
-                    CustomIndy2_Properties = "===== " + $CustomIndy2_DrawShortName + " #2 ====="
-                }
-            }
         }
 
+        #Disable Custom Indicator
         if ($comboBox2.SelectedItem.ToString() -eq "DisableCustomIndy" ) {
-            #Disable Custom Indicator
             Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
                 CustomIndy2_Properties           = "===== Custom Indy #2 ====="
                 CustomIndy2_Label                = "Custom Indicator Label"
@@ -2159,6 +2202,20 @@ function ButtonCustomIndy_2([string]$filePath) {
                 CustomIndy2_HedgeOn              = "0"
                 CustomIndy2_CloseOn              = "0"
                 CustomIndy2_PartialCloseOn       = "0"
+            }
+        }
+
+        if (!($comboBox2.SelectedItem.ToString() -eq "DisableCustomIndy" )) {
+            #Read All Setting File parameters
+            $inifile = Get-IniFile($filePath)
+
+            #Detect Exist a Custom Indicator. Version => 2.49.2.1(BETA)
+            $CustomIndy2_Type = [int]$inifile["CustomIndy2_Type"]
+            if ($CustomIndy2_Type -ne 0) {
+                $CustomIndy2_DrawShortName = [string]$inifile["CustomIndy2_DrawShortName"]
+                Set-OrAddIniValue -FilePath $filePath  -keyValueList @{
+                    CustomIndy2_Properties = "===== " + $CustomIndy2_DrawShortName + " #2 ====="
+                }
             }
         }
     }
@@ -2195,7 +2252,7 @@ $comboBox1.Size = '190,50'
 $comboBox1.DropDownStyle = 'DropDownList'
 $comboBox1.AutoCompleteSource = 'ListItems'
 $comboBox1.AutoCompleteMode = 'Append'
-$comboBox1.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend"))
+$comboBox1.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend", "Bollinger bands breakout"))
 
 # Combobox
 $comboBox2 = New-Object System.Windows.Forms.ComboBox
@@ -2204,7 +2261,7 @@ $comboBox2.Size = '190,50'
 $comboBox2.DropDownStyle = 'DropDownList'
 $comboBox2.AutoCompleteSource = 'ListItems'
 $comboBox2.AutoCompleteMode = 'Append'
-$comboBox2.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend"))
+$comboBox2.Items.AddRange( @("", "DisableCustomIndy", "SuperTrend", "Bollinger bands breakout"))
 
 # Button
 $button = New-Object System.Windows.Forms.Button
@@ -2301,14 +2358,6 @@ $button13.Location = '5,340'
 $button13.Size = '75,20'
 $button13.Width = 300
 $button13.Text = "Stoller Average Range Channel #2 (MA #2 && Volatility)"
-
-# Button
-# https://www.investopedia.com/terms/s/starc.asp
-$button14 = New-Object System.Windows.Forms.Button
-$button14.Location = '5,360'
-$button14.Size = '75,20'
-$button14.Width = 300
-$button14.Text = "Stoller Average Range Channel #3 (MA #3 && Volatility)"
 
 # Button
 # https://www.investopedia.com/terms/s/starc.asp
@@ -2635,7 +2684,6 @@ $button14.Add_Click($button14_Click)
 #Apply CustomIndy
 $button15.Add_Click($button15_Click)
 $button16.Add_Click($button16_Click)
-
 $listBox.Add_DragOver($listBox_DragOver)
 $listBox.Add_DragDrop($listBox_DragDrop)
 
